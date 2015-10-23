@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Commandline tool for tap prediction
 

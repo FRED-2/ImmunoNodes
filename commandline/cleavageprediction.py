@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Cleavage prediction commandline tool
 
