@@ -109,6 +109,7 @@ setup(
     entry_points={
         'console_scripts': [
             'epitopeprediction=commandline.epitopeprediction:main',
+            'tapprediction=commandline.tapprediction:main',
         ],
     },
 

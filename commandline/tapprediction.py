@@ -1,5 +1,5 @@
 """
-Commandline tool for epitope prediction
+Commandline tool for tap prediction
 
 
 """
@@ -9,12 +9,12 @@ from CTDopts import CTDModel
 
 from Fred2.Core import Protein, Peptide, Allele
 from Fred2.IO import read_lines, read_fasta
-from Fred2.EpitopePrediction import EpitopePredictorFactory
+from Fred2.TAPPrediction import TAPPredictorFactory
 from Fred2.Core import generate_peptides_from_protein
 
 
 def main():
-    #Specify CTD interface
+#Specify CTD interface
     # Every CTD Model has to have at least a name and a version, plus any of the optional attributes below them.
     model = CTDModel(
         name='EpitopePredicton',  # required
@@ -27,8 +27,8 @@ def main():
     model.add(
         'method',
         type=str,
-        choices=EpitopePredictorFactory.available_methods().keys(),
-        default="bimas",
+        choices=TAPPredictorFactory.available_methods().keys(),
+        default="svmtap",
         description='The name of the prediction method'
         )
 
@@ -55,16 +55,10 @@ def main():
 
     model.add(
         'length',
-        num_range=(8, 16),
+        num_range=(9, 16),
         type=int,
         default=9,
         description='The length of peptides'
-        )
-
-    model.add(
-        'alleles',
-        type="input_file",
-        description='Path to the allele file (one per line in new nomenclature)'
         )
 
     model.add(
@@ -88,11 +82,12 @@ def main():
     #read in alleles
     alleles = read_lines(args["alleles"], type=Allele)
     if args["version"] == "":
-        result = EpitopePredictorFactory(args["method"]).predict(peptides, alleles)
+        result = TAPPredictorFactory(args["method"]).predict(peptides, alleles)
     else:
-        result = EpitopePredictorFactory(args["method"], version=args["version"]).predict(peptides, alleles)
+        result = TAPPredictorFactory(args["method"], version=args["version"]).predict(peptides, alleles)
     result.to_csv(args["out"])
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())
