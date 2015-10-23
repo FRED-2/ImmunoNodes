@@ -117,8 +117,8 @@ setup(
 
 
     # Dependency links to be able install from github directly
-    dependency_links = ["git+https://github.com/FRED-2/Fred2/tarball/master#egg=Fred2-2.0.0",
-                        "git+https://github.com/WorkflowConversion/CTDopts/tarball/master/CTDopts-0.3"],
+    dependency_links=["git+https://github.com/FRED-2/Fred2/tarball/master#egg=Fred2-2.0.0",
+                      "git+https://github.com/WorkflowConversion/CTDopts/tarball/master/CTDopts-0.3"],
 
     # Run-time dependencies. (will be installed by pip when FRED2 is installed)
     install_requires=['Fred2>=2.0', 'CTDopts>=0.3'],
