@@ -110,6 +110,7 @@ setup(
         'console_scripts': [
             'epitopeprediction=commandline.epitopeprediction:main',
             'tapprediction=commandline.tapprediction:main',
+            'cleavageprediction=commandline.cleavageprediction:main',
         ],
     },
 

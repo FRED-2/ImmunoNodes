@@ -35,7 +35,7 @@ def main():
     model.add(
         'version',
         type=str,
-        default="",
+        default=None,
         description='The version of the prediction method'
         )
 
@@ -62,6 +62,13 @@ def main():
         )
 
     model.add(
+        'options',
+        type=str,
+        default=None,
+        description="Additional options that get directly past to the tool"
+    )
+
+    model.add(
         'output',
         type="output_file",
         description='Path to the output file'
@@ -79,12 +86,10 @@ def main():
         sys.stderr.write('Input type not known\n')
         return -1
 
-    #read in alleles
-    alleles = read_lines(args["alleles"], type=Allele)
-    if args["version"] == "":
-        result = TAPPredictorFactory(args["method"]).predict(peptides, alleles)
+    if args["version"] is None:
+        result = TAPPredictorFactory(args["method"]).predict(peptides, options=args["options"])
     else:
-        result = TAPPredictorFactory(args["method"], version=args["version"]).predict(peptides, alleles)
+        result = TAPPredictorFactory(args["method"], version=args["version"]).predict(peptides, options=args["options"])
     result.to_csv(args["out"])
     return 0
 
