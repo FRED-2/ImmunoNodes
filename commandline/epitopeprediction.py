@@ -6,7 +6,7 @@ Commandline tool for epitope prediction
 """
 import sys
 
-from CTDopts import CTDModel
+from CTDopts.CTDopts import CTDModel
 
 from Fred2.Core import Protein, Peptide, Allele
 from Fred2.IO import read_lines, read_fasta
@@ -42,7 +42,8 @@ def main():
 
     model.add(
         'input',
-        type="input_file",
+        type="input-file",
+        required=True,
         description='Path to the input file'
         )
 
@@ -64,7 +65,8 @@ def main():
 
     model.add(
         'alleles',
-        type="input_file",
+        type="input-file",
+        required=True,
         description='Path to the allele file (one per line in new nomenclature)'
         )
 
@@ -77,11 +79,14 @@ def main():
 
     model.add(
         'output',
-        type="output_file",
+        type="output-file",
+        required=True,
         description='Path to the output file'
         )
 
-    args = model.parse_cl_args(cl_args=sys.argv[1:])
+    args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
+    args = model.parse_cl_args(cl_args=args_str)
+    print args
 
     #fasta protein
     if args["type"] == "fasta":
@@ -98,8 +103,10 @@ def main():
     if args["version"] is None:
         result = EpitopePredictorFactory(args["method"]).predict(peptides, alleles, options=args["options"])
     else:
-        result = EpitopePredictorFactory(args["method"], version=args["version"]).predict(peptides, alleles, options=args["options"])
-    result.to_csv(args["out"])
+        result = EpitopePredictorFactory(args["method"], version=args["version"]).predict(peptides, alleles,
+                                                                 options=args["options"])
+    print result
+    result.to_csv(args["output"])
     return 0
 
 if __name__ == "__main__":

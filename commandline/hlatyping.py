@@ -7,7 +7,7 @@ Commandline tool for hla typing prediction
 import sys
 import tempfile
 
-from CTDopts import CTDModel
+from CTDopts.CTDopts import CTDModel
 
 from Fred2.HLAtyping import HLATypingFactory
 
@@ -40,7 +40,7 @@ def main():
 
     model.add(
         'input',
-        type="input_file",
+        type="input-file",
         description='Path to the input file'
         )
 
@@ -60,11 +60,11 @@ def main():
 
     model.add(
         'output',
-        type="output_file",
+        type="output-file",
         description='Path to the output file'
         )
-
-    args = model.parse_cl_args(cl_args=sys.argv[1:])
+    args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
+    args = model.parse_cl_args(cl_args=args_str)
 
     #fasta protein
     genotype = HLATypingFactory(args["name"], version=args["version"]).predict(args["input"], args["tmp_output"],
