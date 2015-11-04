@@ -18,11 +18,11 @@ def main():
 #Specify CTD interface
     # Every CTD Model has to have at least a name and a version, plus any of the optional attributes below them.
     model = CTDModel(
-        name='EpitopePredicton',  # required
+        name='CleavagePrediction',  # required
         version='1.0',  # required
-        description='Commandline tool for epitope prediction',
+        description='Commandline tool for cleavage site prediction',
         manual='manual string',
-        executableName='epitopeprediction',
+        executableName='cleavageprediction',
         )
 
     model.add(
@@ -43,6 +43,7 @@ def main():
     model.add(
         'input',
         type="input-file",
+        required=True,
         description='Path to the input file'
         )
 
@@ -72,10 +73,23 @@ def main():
     model.add(
         'output',
         type="output-file",
+        required=True,
         description='Path to the output file'
         )
+
+    model.add(
+        'ctdout',
+        default=None,
+        type="output-file",
+        description='Output path to for cds'
+        )
+
     args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
     args = model.parse_cl_args(cl_args=args_str)
+
+    if args["ctdout"] is not None:
+        model.write_ctd(args[args["ctdout"]])
+        return 0
 
     #fasta protein
     if args["type"] == "fasta":
@@ -109,3 +123,6 @@ def main():
                                                         names=['Seq', 'Method'])
     result.to_csv(args["out"])
     return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

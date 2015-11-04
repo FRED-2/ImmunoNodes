@@ -84,9 +84,19 @@ def main():
         description='Path to the output file'
         )
 
+    model.add(
+        'ctdout',
+        default=None,
+        type="output-file",
+        description='Output path to for cds'
+        )
+
     args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
     args = model.parse_cl_args(cl_args=args_str)
-    print args
+
+    if args["ctdout"] is not None:
+        model.write_ctd(args[args["ctdout"]])
+        return 0
 
     #fasta protein
     if args["type"] == "fasta":

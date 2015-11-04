@@ -18,11 +18,11 @@ def main():
 #Specify CTD interface
     # Every CTD Model has to have at least a name and a version, plus any of the optional attributes below them.
     model = CTDModel(
-        name='EpitopePredicton',  # required
+        name='TAPrediction',  # required
         version='1.0',  # required
-        description='Commandline tool for epitope prediction',
+        description='Commandline tool for TAP prediction',
         manual='manual string',
-        executableName='epitopeprediction',
+        executableName='tapprediction',
         )
 
     model.add(
@@ -74,8 +74,20 @@ def main():
         type="output-file",
         description='Path to the output file'
         )
+
+    model.add(
+        'ctdout',
+        default=None,
+        type="output-file",
+        description='Output path to for cds'
+        )
+
     args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
     args = model.parse_cl_args(cl_args=args_str)
+
+    if args["ctdout"] is not None:
+        model.write_ctd(args[args["ctdout"]])
+        return 0
 
     #fasta protein
     if args["type"] == "fasta":
