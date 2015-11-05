@@ -11,7 +11,7 @@ from CTDopts.CTDopts import CTDModel
 from Fred2.Core import Protein, Peptide, Allele
 from Fred2.IO import read_lines, read_fasta
 from Fred2.TAPPrediction import TAPPredictorFactory
-from Fred2.Core import generate_peptides_from_protein
+from Fred2.Core import generate_peptides_from_proteins
 
 
 def main():
@@ -91,8 +91,11 @@ def main():
 
     #fasta protein
     if args["type"] == "fasta":
-        proteins = read_fasta(args["input"], type=Protein)
-        peptides = generate_peptides_from_protein(proteins, args["length"])
+        with open(args["input"], 'r') as f:
+            first_line = f.readline()
+        sep_pos = 1 if first_line.count("|") else 0
+        proteins = read_fasta(args["input"], type=Protein, id_position=sep_pos)
+        peptides = generate_peptides_from_proteins(proteins, args["length"])
     elif args["type"] == "peptide":
         peptides = read_lines(args["input"], type=Peptide)
     else:
@@ -103,7 +106,16 @@ def main():
         result = TAPPredictorFactory(args["method"]).predict(peptides, options=args["options"])
     else:
         result = TAPPredictorFactory(args["method"], version=args["version"]).predict(peptides, options=args["options"])
-    result.to_csv(args["out"])
+
+    #write to TSV columns sequence method score...,protein-id/transcript-id
+    with open(args["output"], "w") as f:
+        proteins = "\tProtein ID" if args["type"] == "fasta" else ""
+        f.write("Sequence\tMethod\t"+"Score"+proteins+"\n")
+        for index, row in result.iterrows():
+            p = index
+            proteins = ",".join(prot.transcript_id for prot in p.get_all_proteins()) if args["type"] == "fasta" else ""
+            f.write(str(p)+"\t"+"\t".join("%s\t%.3f"%(method, score) for
+                                          method, score in row.iteritems())+"\t"+proteins+"\n")
     return 0
 
 

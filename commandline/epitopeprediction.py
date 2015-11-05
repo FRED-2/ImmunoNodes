@@ -5,13 +5,14 @@ Commandline tool for epitope prediction
 
 """
 import sys
+import pandas
 
 from CTDopts.CTDopts import CTDModel
 
 from Fred2.Core import Protein, Peptide, Allele
 from Fred2.IO import read_lines, read_fasta
 from Fred2.EpitopePrediction import EpitopePredictorFactory
-from Fred2.Core import generate_peptides_from_protein
+from Fred2.Core import generate_peptides_from_proteins
 
 
 def main():
@@ -93,15 +94,18 @@ def main():
 
     args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
     args = model.parse_cl_args(cl_args=args_str)
-
+    print args
     if args["ctdout"] is not None:
         model.write_ctd(args[args["ctdout"]])
         return 0
 
     #fasta protein
     if args["type"] == "fasta":
-        proteins = read_fasta(args["input"], type=Protein)
-        peptides = generate_peptides_from_protein(proteins, args["length"])
+        with open(args["input"], 'r') as f:
+            first_line = f.readline()
+        sep_pos = 1 if first_line.count("|") else 0
+        proteins = read_fasta(args["input"], type=Protein, id_position=sep_pos)
+        peptides = generate_peptides_from_proteins(proteins, args["length"])
     elif args["type"] == "peptide":
         peptides = read_lines(args["input"], type=Peptide)
     else:
@@ -115,8 +119,18 @@ def main():
     else:
         result = EpitopePredictorFactory(args["method"], version=args["version"]).predict(peptides, alleles,
                                                                  options=args["options"])
-    print result
-    result.to_csv(args["output"])
+
+    #write to TSV columns sequence method allele-scores...,protein-id/transcript-id
+    with open(args["output"], "w") as f:
+        proteins = "\tProtein ID" if args["type"] == "fasta" else ""
+        alleles = result.columns
+        f.write("Sequence\tMethod\t"+"\t".join(a.name for a in alleles)+proteins+"\n")
+        for index, row in result.iterrows():
+            p = index[0]
+            method = index[1]
+            proteins = ",".join( prot.transcript_id for prot in p.get_all_proteins()) if args["type"] == "fasta" else ""
+            f.write(str(p)+"\t"+method+"\t"+"\t".join("%.3f"%row[a] for a in alleles)+"\t"+proteins+"\n")
+
     return 0
 
 if __name__ == "__main__":

@@ -8,10 +8,10 @@ import pandas
 
 from CTDopts.CTDopts import CTDModel
 
-from Fred2.Core import Protein, Peptide, Allele
+from Fred2.Core import Protein, Peptide
 from Fred2.IO import read_lines, read_fasta
 from Fred2.CleavagePrediction import CleavageSitePredictorFactory, CleavageFragmentPredictionResult
-from Fred2.Core import generate_peptides_from_protein
+from Fred2.Core import generate_peptides_from_proteins
 
 
 def main():
@@ -44,15 +44,7 @@ def main():
         'input',
         type="input-file",
         required=True,
-        description='Path to the input file'
-        )
-
-    model.add(
-        'type',
-        choices=["fasta","peptide"],
-        type=str,
-        default="fasta",
-        description='The data type of the input (fasta, peptide list)'
+        description='Path to the input file (in fasta format)'
         )
 
     model.add(
@@ -86,24 +78,15 @@ def main():
 
     args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
     args = model.parse_cl_args(cl_args=args_str)
-
     if args["ctdout"] is not None:
         model.write_ctd(args[args["ctdout"]])
         return 0
 
     #fasta protein
-    if args["type"] == "fasta":
-        peptides = read_fasta(args["input"], type=Protein)
-        if args["length"] is not None:
-            peptides = generate_peptides_from_protein(peptides, args["length"])
-    elif args["type"] == "peptide":
-        peptides = read_lines(args["input"], type=Peptide)
-    else:
-        sys.stderr.write('Input type not known\n')
-        return -1
+    peptides = read_fasta(args["input"], type=Protein)
 
     if args["version"] is None:
-        predictor = CleavageSitePredictorFactory(args["method"]).predict(peptides, options=args["options"])
+        predictor = CleavageSitePredictorFactory(args["method"])
         result = predictor.predict(peptides, options=args["options"])
     else:
         predictor = CleavageSitePredictorFactory(args["method"], version=args["version"])
@@ -111,17 +94,17 @@ def main():
 
     #if length is specified, than generate compact output
     if args["length"] is not None:
-        length = args["length"]
-        r_comp = {predictor.name:{}}
-        for seq_id in set(result.index.get_level_values(0)):
-                seq = "".join(result.ix[seq_id]["Seq"])
-                for start in xrange(len(seq)-(length-1)):
-                    pep_seq = seq[start:(start+(length-1))]
-                    r_comp[predictor.name][pep_seq] = result.loc[(seq_id++(length-1), start), predictor.name]
-        result = CleavageFragmentPredictionResult.from_dict(result)
-        result.index = pandas.MultiIndex.from_tuples([tuple((i, predictor.name)) for i in result.index],
-                                                        names=['Seq', 'Method'])
-    result.to_csv(args["out"])
+        length = int(args["length"])
+        with open(args["output"], "w") as f:
+            f.write("Sequence\tMethod\tScore\tProtein ID\tPosition\n")
+            for seq_id in set(result.index.get_level_values(0)):
+                    seq = "".join(result.ix[seq_id]["Seq"])
+                    for start in xrange(len(seq)-(length-1)):
+                        pep_seq = seq[start:(start+(length-1))]
+                        score = result.loc[(seq_id, start+(length-2)), predictor.name]
+                        f.write(pep_seq+"\t"+predictor.name+"\t"+"%.3f"%score+"\t"+seq_id+"\t"+str(start)+"\n")
+    else:
+        result.to_csv(args["output"], float_format="%.3f", sep="\t")
     return 0
 
 if __name__ == "__main__":
