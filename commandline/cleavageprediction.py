@@ -4,14 +4,12 @@ Cleavage prediction commandline tool
 
 """
 import sys
-import pandas
 
 from CTDopts.CTDopts import CTDModel
 
-from Fred2.Core import Protein, Peptide
-from Fred2.IO import read_lines, read_fasta
-from Fred2.CleavagePrediction import CleavageSitePredictorFactory, CleavageFragmentPredictionResult
-from Fred2.Core import generate_peptides_from_proteins
+from Fred2.Core import Protein
+from Fred2.IO import read_fasta
+from Fred2.CleavagePrediction import CleavageSitePredictorFactory
 
 
 def main():
