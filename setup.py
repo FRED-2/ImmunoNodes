@@ -113,7 +113,9 @@ setup(
             'cleavageprediction=commandline.cleavageprediction:main',
             'hlatyping=commandline.hlatyping:main',
             'epitopeassembly=commandline.epitopeassembly.main',
-            'neoepitopeprediction=commandline.neoepitopeprediction.main'
+            'neoepitopeprediction=commandline.neoepitopeprediction.main',
+            'spacerdesign=commandline.spacerdesign.main',
+            'allelefrequency=commandline.allelefrequency.main'
         ],
     },
 
