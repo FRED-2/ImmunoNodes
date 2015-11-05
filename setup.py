@@ -112,6 +112,8 @@ setup(
             'tapprediction=commandline.tapprediction:main',
             'cleavageprediction=commandline.cleavageprediction:main',
             'hlatyping=commandline.hlatyping:main',
+            'epitopeassembly=commandline.epitopeassembly.main',
+            'neoepitopeprediction=commandline.neoepitopeprediction.main'
         ],
     },
 
