@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Command line tool for epitope selection
 """
@@ -187,14 +188,14 @@ def main():
     opti = OptiTope(epitopePrediciton, threshold=thresh, k=args.k, solver="cbc", threads=1, verbosity=0)
 
     # set constraints
-    if args["cons_allele"] > 0.0:
+    if args["cons-allele"] > 0.0:
         #print "allele constraiont enforced"
         opti.activate_allele_coverage_const(args.cons_allele / 100)
 
-    if args["cons_antigen"] > 0.0:
+    if args["cons-antigen"] > 0.0:
         opti.activate_antigen_coverage_const(args.cons_antigen / 100)
 
-    if args["cons_conservation"] > 0.0:
+    if args["cons-conservation"] > 0.0:
 
         if args["conservation"] is not None:
             conservation = {}
@@ -202,9 +203,9 @@ def main():
                 for l in f:
                     seq, cons = l.replace(",", " ").replace(";", " ").split()
                     conservation[seq.strip().upper()] = float(cons.strip())
-            opti.activate_epitope_conservation_const(args["cons_conservation"] / 100.0, conservation=conservation)
+            opti.activate_epitope_conservation_const(args["cons-conservation"] / 100.0, conservation=conservation)
         else:
-            opti.activate_epitope_conservation_const(args["cons_conservation"] / 100.0)
+            opti.activate_epitope_conservation_const(args["cons-conservation"] / 100.0)
     try:
         result = opti.solve()
         #print result
