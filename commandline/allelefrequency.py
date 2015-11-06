@@ -2,15 +2,14 @@
 Command line tool to assign allele frequencies to alleles lists
 
 """
-import sys
-
 from CTDopts.CTDopts import CTDModel
-
 from Fred2.Core import Allele
 from Fred2.IO import read_lines
 
+import sys
 from data.geo import geo
 from data.pop import pop
+
 
 def main():
     #Specify CTD interface
@@ -27,7 +26,6 @@ def main():
         'population',
         choices=geo.keys()+pop.keys(),
         type=str,
-        default="Europe",
         required=True,
         description='Specifies the population (e.g. Europe)',
         short_name="p"
@@ -36,6 +34,7 @@ def main():
     model.add(
         'alleles',
         type="input-file",
+        default=None,
         description='Path to the allele file (one per line in new nomenclature)',
         short_name="a"
         )
@@ -53,14 +52,16 @@ def main():
         'output',
         type="output-file",
         required=True,
-        description='Path to the output file'
+        description='Path to the output file',
+        short_name="o"
         )
 
     model.add(
         'ctdout',
         default=None,
         type="output-file",
-        description='Output path to for cds'
+        description='Output path to for cds',
+        short_name="cds"
         )
 
     args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
@@ -70,21 +71,27 @@ def main():
         model.write_ctd(args[args["ctdout"]])
         return 0
 
-    alleles = read_lines(args["alleles"], type=Allele)
     thr = float(args["threshold"])
     with open(args["output"], "w") as f:
         if args["population"] in geo:
             freqs = geo[args["population"]]
-        elif  args["population"] in pop:
+        elif args["population"] in pop:
             freqs = geo[args["population"]]
         else:
             sys.stderr("{pop} could not be found".format(pop=args["population"]))
             return -1
 
-        for a in alleles:
-            fr = float(freqs.get(a.name,0.0))
-            if fr >= thr:
-                f.write(a.name+"\t"+"%.3f"%fr+"\n")
+        if args["alleles"] is not None:
+            alleles = read_lines(args["alleles"], type=Allele)
+            for a in alleles:
+                fr = freqs.get(a.name, 0.0)
+                if fr >= thr:
+                    f.write(a.name+"\t"+"%.3f"%fr+"\n")
+        else:
+            for a, fr in freqs.iteritems():
+                fr = fr
+                if fr >= thr:
+                    f.write(a+"\t"+"%.3f"%fr+"\n")
     return 0
 
 if __name__ == "__main__":
