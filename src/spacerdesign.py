@@ -72,6 +72,7 @@ optional arguments:
 
 import sys
 import multiprocessing as mp
+import argparse
 
 from Fred2.IO import FileReader
 from Fred2.Core import Allele
@@ -80,14 +81,12 @@ from Fred2.EpitopePrediction import EpitopePredictorFactory
 from Fred2.EpitopeAssembly.EpitopeAssembly import EpitopeAssemblyWithSpacer
 from Fred2.CleavagePrediction import CleavageSitePredictorFactory
 
-from CTDopts.CTDopts import CTDModel
-
 
 def generate_alleles(allele_file, generated=None):
     """
                 generate allele objects from input
     """
-    result=[]
+    result = []
     with open(allele_file, "r") as f:
         for l in f:
             al, freq = l.replace(",", " ").replace(";", " ").replace("\n", "").split()
@@ -95,119 +94,112 @@ def generate_alleles(allele_file, generated=None):
                 result.append(Allele(al, prob=float(freq)))
     return result
 
+def read_lines(file):
+    peptides = []
+
+    with open(file, "r") as f:
+        for l in f:
+            if not l.startswith("#") and l.strip() != "" and not l.startswith("Epitope") and not l.startswith("Sequence"):
+                #print l, l.split()
+                pep = l.split()[0].strip()
+                peptides.append(Peptide(pep))
+    return peptides
 
 def main():
-    parser = CTDModel(
-        name='SpacerDesign',  # required
-        version='1.0',  # required
-        description='he software is a novel approach to construct epitope-based string-of-beads \
+    parser = argparse.ArgumentParser(
+        description='The software is a novel approach to construct epitope-based string-of-beads \
 vaccines in optimal order and with sequence-optimized spacers of flexible length \
 such that the recovery of contained epitopes is maximized and immunogenicity of \
 arising neo-epitopes is reduced.',
-        manual='manual string',
-        executableName='spacerdesign',
         )
 
-    parser.add("input",
+    parser.add_argument('-i',"--input",
                         required=True,
                         help="File containing epitopes (one peptide per line)",
-                        short_name="i"
+                        type=str
     )
 
-    parser.add("alleles",
+    parser.add_argument('-a',"--alleles",
                         required=True,
                         help="Specifies file containing HLA alleles with corresponding HLA probabilities (one HLA per line)",
-                        short_name="a"
-
+                        type=str
     )
 
     #parameters of the model
-    parser.add("max_length",
+    parser.add_argument('-l',"--max_length",
                         default=6,
                         type=int,
                         help="Specifies the max. length of the spacers (default 6)",
-                        short_name="k")
+                        )
 
-    parser.add("alpha",
+    parser.add_argument('-al',"--alpha",
                         default=0.99,
                         type=float,
-                        num_range=(0.0, 1.0),
                         help="Specifies the first-order preference of the user in the model [0,1] (default 0.99)",
-                        short_name="al")
-    parser.add("beta",
+                        )
+    
+    parser.add_argument('-be',"--beta",
                         default=0.0,
                         type=float,
-                        num_range=(0.0, 1.0),
                         help="Specifies the second-order preference of the user in the model [0,1] (default 0).",
-                        short_name="be")
+                        )
 
-    parser.add("cleavage-prediction",
-                        default="PCM",
-                        choice=["PCM", "PROTEASMM_C", "PROTEASMM_i"],
-                        help="Specifies the used cleavage prediction method (default PCM) [available: PCM, PROTEASMM_C, PROTEASMM_S]",
-                        short_name="cp"
+    parser.add_argument('-cp',"--cleavage_prediction",
+                        default="pcm",
+                        choices=["pcm", "proteasmm_c", "proteasmm_i"],
+                        help="Specifies the used cleavage prediction method (default PCM) [available: PCM, PROTEASMM_C, PROTEASMM_I]",
+                        type=str
     )
-    parser.add("cleavage-version",
-                        default=None,
-                        help="Specifies the ",
-                        short_name="cp"
-    )
-    parser.add("epitope-prediction",
-                        default="Syfpeithi",
-                        choice=["Syfpeithi", "SMM", "SMMPMBEC", "BIMAS"],
+
+    parser.add_argument('-ep',"--epitope_prediction",
+                        default="syfpeithi",
+                        choices=["syfpeithi", "smm", "smmpmbec", "bimas"],
                         help="Specifies the used epitope prediction method (default Syfpeithi) [available: Syfpeithi, BIMAS, SMM, SMMPMBEC]",
-                        short_name="ep"
+                        type=str
     )
-    parser.add("threshold",
+    parser.add_argument('-t',"--threshold",
                         default=20,
                         type=float,
                         help="Specifies epitope prediction threshold for SYFPEITHI (default 20).",
-                        short_name="thr")
+                        )
 
-    parser.add("output",
+    parser.add_argument('-o',"--output",
                         required=True,
+                        type=str,
                         help="Specifies the output file.",
-                        short_name="o")
+    )
 
-    parser.add("threads",
+    parser.add_argument('-p',"--threads",
                         type=int,
-                        default=None,
+                        default=1,
                         help="Specifies number of threads. If not specified all available logical cpus are used.",
-                        short_name="t")
+                        ) 
+    parser.add_argument('-apx',"--approximate",
+                        action="store_true",
+                        help="Specifies number of threads. If not specified all available logical cpus are used.",
+                        ) 
 
 
-    parser.add(
-        'ctdout',
-        default=None,
-        type="output-file",
-        description='Output path to for cds'
-        )
-
-    args_str = sys.argv[1:] if sys.argv[1:] else ["--help"]
-    args = parser.parse_cl_args(cl_args=args_str)
-
-    if args["ctdout"] is not None:
-        parser.write_ctd(args[args["ctdout"]])
-        return 0
+    args = parser.parse_args()
 
     #parse input
-    peptides = list(FileReader.read_lines(args["input"], type=Peptide))
+    peptides = read_lines(args.input)
     #read in alleles
-    alleles = generate_alleles(args["alleles"])
+    alleles = generate_alleles(args.alleles)
 
-    if args["cleavage-prediction"].upper() not in ["PCM", "PROTEASMM_C", "PROTEASMM_S"]:
+    if args.cleavage_prediction.upper() not in ["PCM", "PROTEASMM_C", "PROTEASMM_I"]:
         sys.stderr.write("Specified cleavage predictor is currently not supported. \
-                         Please choose either PCM, PROTEASMM_C, or PROTEASMM_S")
+                         Please choose either PCM, PROTEASMM_C, or PROTEASMM_I")
         sys.exit(-1)
 
-    if args["epitope-prediction"].upper() not in ["SYFPEITHI", "BIMAS", "SMM", "SMMPMBEC"]:
+    if args.epitope_prediction.upper() not in ["SYFPEITHI", "BIMAS", "SMM", "SMMPMBEC"]:
         sys.stderr.write("Specified cleavage predictor is currently not supported. \
                          Please choose either Syfpeithi, BIMAS, SMM, SMMPMBEC")
         sys.exit(-1)
 
     #set-up model
-    cl_pred = CleavageSitePredictorFactory(args["cleavage-prediction"], version=args["cleavage-version"])
-    epi_pred = EpitopePredictorFactory(args["epitope_prediction"], version=args["epitope-version"])
+    cl_pred = CleavageSitePredictorFactory(args.cleavage_prediction)
+    epi_pred = EpitopePredictorFactory(args.epitope_prediction)
 
 
     thr = {a.name:args.threshold for a in alleles}
@@ -215,20 +207,25 @@ arising neo-epitopes is reduced.',
     solver = EpitopeAssemblyWithSpacer(peptides,cl_pred,epi_pred,alleles,
                                        k=args.max_length,en=9,threshold=thr,
                                        solver="cbc", alpha=args.alpha, beta=args.beta,
-                                       verbosity=0)
-
+                                       verbosity=1)
     #solve
     #pre-processing has to be disable otherwise many solver will destroy the symmetry of the problem
     #how to do this is dependent on the solver used. For CPLEX it is preprocessing_presolve=n
     #TODO:CBC should be shipped with the node
     #TODO: has to be tested with CBC
     #TODO: LHK has to be shipped as well -> only academic license!
+    #"preprocess":"off", "threads":1}
     threads = mp.cpu_count() if args.threads is None else args.threads
-    svbws = solver.approximate(threads=threads,options="preprocess=off threads=1")
+    if args.approximate:
+        svbws = solver.approximate(threads=threads, options={"preprocess":"off", "threads":1})
+        if not svbws:
+            svbws = solver.solve(threads=threads, options={"preprocess":"off", "threads":1})
+    else:
+        svbws = solver.solve(threads=threads, options={"preprocess":"off", "threads":1})
 
     with open(args.output, "w") as f:
-        f.write(">assembled_spacer_design")
-        f.write("".join(map(str,svbws)))
+        f.write(">assembled_spacer_design\n")
+        f.write("".join(map(str, svbws)))
     return 0
 
 if __name__ == "__main__":
