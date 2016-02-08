@@ -108,14 +108,14 @@ setup(
     # deinstallation does not work)
     entry_points={
         'console_scripts': [
-            'epitopeprediction=commandline.epitopeprediction:main',
-            'tapprediction=commandline.tapprediction:main',
-            'cleavageprediction=commandline.cleavageprediction:main',
-            'hlatyping=commandline.hlatyping:main',
-            'epitopeassembly=commandline.epitopeassembly.main',
-            'neoepitopeprediction=commandline.neoepitopeprediction.main',
-            'spacerdesign=commandline.spacerdesign.main',
-            'allelefrequency=commandline.allelefrequency.main'
+            'epitopeprediction=src.epitopeprediction:main',
+            'tapprediction=src.tapprediction:main',
+            'cleavageprediction=src.cleavageprediction:main',
+            'hlatyping=src.hlatyping:main',
+            'epitopeassembly=src.epitopeassembly.main',
+            'neoepitopeprediction=src.neoepitopeprediction.main',
+            'spacerdesign=src.spacerdesign.main',
+            'allelefrequency=src.allelefrequency.main'
         ],
     },
 

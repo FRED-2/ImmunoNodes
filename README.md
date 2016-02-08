@@ -1,2 +1,2 @@
-FRED2-Apps - Commandline tools and KINME extension for FRED2
-------------------------------------------------------------
+ImmunoNodes - Commandline tools and KINME extension of FRED 2
+-------------------------------------------------------------
