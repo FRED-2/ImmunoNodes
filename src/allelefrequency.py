@@ -2,16 +2,42 @@
 """
 Command line tool to assign allele frequencies to alleles lists
 
-usage: allelefrequency.py [-h] -p
-                          {Oceania,South-East_Asia,South-West_Asia,Europe,North_Africa,Australia,South_America,Sub-Saharan_Africa,Other,North-East_Asia,North_America}
+usage: allelefrequency.py [-h]
+                          [-g {Oceania,South-East_Asia,South-West_Asia,Europe,North_Africa,Australia,South_America,
+                               Sub-Saharan_Africa,Other,North-East_Asia,North_America}]
+                          [-p {Moroccan_99,Moroccan_98,Muong,Singapore_Chinese),Finn_90,North_America_(Eu),Tamil,
+                               Israeli_Jews,Filipino,Omani,Turk,Cuban_(Eu),Hakka,Zambian,Kenyan_142,North_America_(As),
+                               Yuendumu,Algerian_99,Slovenian,Saisiat,North_America_(Hi),Rwandan,Okinawan,Mandenka,Zulu,
+                               Georgian,Ivatan,Ugandan,Thai,Han-Chinese_572,Thao,Sioux,Bulgarian,Kinh,South_Indian,
+                               Atayal,Kenyan_Lowlander,Metalsa,Chaouya,PNG_Highlander,Chinese,Puyuma_49,Tsou,Bari,
+                               Buriat,Minnan,Cuban_(Af_Eu),Brazilian,Tuva,Canoncito,Kenyan_Highlander,East_Timorese,
+                               Malay,Zuni,PNG_Lowlander_48,North_America_(Af),Ticuna,New_Delhi,Bunun,Brazilian_(Af_Eu,
+                               Pima_99,Ami_97,Korean_200,Irish,Czech,Guarani-Kaiowa,Toroko,Ryukuan,Pima_17,
+                               Arab_Druze,Moluccan,Shona,Yupik,Javanese_Indonesian,Yami,Cape_York,Maya,Paiwan_51,
+                               Guarani-Nandewa,Rukai,Kimberley,American_Samoa,Kurdish,Siraya,Groote_Eylandt,
+                               Han-Chinese_149,Central_America,Pazeh,Seri,Mexican,Lacandon,PNG_Lowlander_95,
+                               Amerindian,Croatian,Doggon}]
                           [-a ALLELES] [-t THRESHOLD] -o OUTPUT
 
 Commandline tool for allele frequency assignment
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p {Oceania,South-East_Asia,South-West_Asia,Europe,North_Africa,Australia,South_America,Sub-Saharan_Africa,Other,North-East_Asia,North_America}, --population {Oceania,South-East_Asia,South-West_Asia,Europe,North_Africa,Australia,South_America,Sub-Saharan_Africa,Other,North-East_Asia,North_America}
-                        Specifies the population (e.g. Europe)
+  -g  GEOGRAPHIC --geographic {Oceania,South-East_Asia,South-West_Asia,Europe,North_Africa,Australia,South_America,
+                               Sub-Saharan_Africa,Other,North-East_Asia,North_America}
+                        Specifies the geographic region (e.g. Europe)
+  -p POPULATION, --population {Moroccan_99,Moroccan_98,Muong,Singapore_(Chinese),Finn_90,North_America_(Eu),Tamil,
+                               Israeli_Jews,Filipino,Omani,Turk,Cuban_(Eu),Hakka,Zambian,Kenyan_142,North_America_(As),
+                               Yuendumu,Algerian_99,Slovenian,Saisiat,North_America_(Hi),Rwandan,Okinawan,Mandenka,Zulu,
+                               Georgian,Ivatan,Ugandan,Thai,Han-Chinese_572,Thao,Sioux,Bulgarian,Kinh,South_Indian,
+                               Atayal,Kenyan_Lowlander,Metalsa,Chaouya,PNG_Highlander,Chinese,Puyuma_49,Tsou,Bari,
+                               Buriat,Minnan,Cuban_(Af_Eu),Brazilian,Tuva,Canoncito,Kenyan_Highlander,East_Timorese,
+                               Malay,Zuni,PNG_Lowlander_48,North_America_(Af),Ticuna,New_Delhi,Bunun,Brazilian_(Af_Eu),
+                               Pima_99,Ami_97,Korean_200,Irish,Czech,Guarani-Kaiowa,Toroko,Ryukuan,Pima_17,Arab_Druze,
+                               Moluccan,Shona,Yupik,Javanese_Indonesian,Yami,Cape_York,Maya,Paiwan_51,Guarani-Nandewa,
+                               Rukai,Kimberley,American_Samoa,Kurdish,Siraya,Groote_Eylandt,Han-Chinese_149,
+                               Central_America,Pazeh,Seri,Mexican,Lacandon,PNG_Lowlander_95,Amerindian,Croatian,Doggon}
+                        Specifies the population (e.g. Irish)
   -a ALLELES, --alleles ALLELES
                         Path to the allele file (one per line in new
                         nomenclature)
@@ -20,12 +46,14 @@ optional arguments:
   -o OUTPUT, --output OUTPUT
                         Path to the output file
 
+
 """
 from Fred2.Core import Allele
 from Fred2.IO import read_lines
 
 import sys
 from data.geo import geo
+from data.pop import pop
 import argparse
 
 
@@ -35,13 +63,19 @@ def main():
         )
 
     model.add_argument(
-        '-p','--population',
+        '-g','--geographic',
         choices=geo.keys(),
         type=str,
-        required=True,
-        help='Specifies the population (e.g. Europe)',
+        default="",
+        help='Specifies the geographic region (e.g. Europe)',
         )
-
+    model.add_argument(
+        '-p','--population',
+        choices=pop.keys(),
+        type=str,
+        default="",
+        help='Specifies the population (e.g. Irish)',
+        )
     model.add_argument(
         '-a','--alleles',
         type=str,
@@ -65,12 +99,19 @@ def main():
 
     args = model.parse_args()
 
+    if (args.population != "" and args.geographic != "") or \
+            (args.population == "" and args.geographic == ""):
+        sys.stderr.write("Please select either a geographic region or a population.\n")
+        return -1
+
     thr = float(args.threshold)
     with open(args.output, "w") as f:
-        if args.population in geo:
-            freqs = geo[args.population]
+        if args.geographic in geo:
+            freqs = geo[args.geographic]
+        elif args.population in pop:
+            freqs = pop[args.population]
         else:
-            sys.stderr("{pop} could not be found".format(pop=args.population))
+            sys.stderr.write("{pop} could not be found\n".format(pop=args.population))
             return -1
 
         if args.alleles != "":
