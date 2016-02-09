@@ -68,14 +68,15 @@ def generate_epitope_result(input, allele_file):
         seq = row["Sequence"]
         protPos = collections.defaultdict(list)
         try:
-            protPos = {Protein("", gene_id=p, transcript_id=p): [0] for p in str(row["Protein ID"]).split(",")}
+            protPos = {Protein(p, gene_id=p, transcript_id=p): [0] for p in str(row["Protein ID"]).split(",")}
         except KeyError:
             pass
+        pep = Peptide(seq, protein_pos=protPos)
         for a in alleles_raw:
             if a in alleles:
                 if alleles[a] not in res_dic:
                     res_dic[alleles[a]] = {}
-                res_dic[alleles[a]][Peptide(seq, protein_pos=protPos)] = float(row[a])
+                res_dic[alleles[a]][pep] = float(row[a])
 
     if not res_dic:
         sys.stderr.write("HLA alleles of population and HLA used for prediction did not overlap.")
@@ -131,7 +132,7 @@ def to_csv(out_file, result, instance, pred_method):
         for k, g in locus.iteritems():
             locus = list(g)
             pop_cov *= (1.0 - sum(float(instance.p[a]) for a in locus)) ** 2
-            covered = len(locus) / sum(1 for a in instance.A if a.split("*")[0] == k)
+            covered = len(locus) / float(sum(1 for a in instance.A if a.split("*")[0] == k))
             res.append("#\t%s\t%.2f" % (k, covered * 100))
         res.append("#Population coverage:\t\t%.2f" % ((1.0 - pop_cov) * 100))
         f.write("#RESULTS\n" + "\n".join(res) + "\n")
