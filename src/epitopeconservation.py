@@ -1,3 +1,24 @@
+#!/usr/bin/env python
+"""
+Commandline tool for epitope prediction
+
+usage: epitopeconservation.py [-h] -i INPUT [-l LENGTH] -cons
+                              OUTPUT_CONSERVATION [-f OUTPUT_FASTA]
+
+Epitope conservation computation method.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        Special MSA file
+  -l LENGTH, --length LENGTH
+                        Specifies the length of the peptides (default=9).
+  -cons OUTPUT_CONSERVATION, --output_conservation OUTPUT_CONSERVATION
+                        specifies output file
+  -f OUTPUT_FASTA, --output_fasta OUTPUT_FASTA
+                        specifies output file
+
+"""
 from __future__ import division
 import numpy
 import sys
@@ -190,7 +211,7 @@ def main():
     '''
         some input stuff
     '''
-    parser = argparse.ArgumentParser(description="Epitope Selection for vaccine design.")
+    parser = argparse.ArgumentParser(description="Epitope conservation computation method.")
     parser.add_argument("-i", "--input",
                         required=True,
                         help="Special MSA file"
