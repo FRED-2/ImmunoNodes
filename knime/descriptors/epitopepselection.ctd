@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<tool name="EpitopeSelection" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>implements OptiTope, an integer linear programming based epitope selection framework proposed by Toussaint et al. As input it takes a file containing the results of EpitopePrediction and a tab-separated HLA allele file with assigned population frequencies, similar to the type of files that AlleleFrequency can generate. Optionally, EpitopeSelection accepts a tab-separated file containing the epitope sequences of the EpitopePrediction result with assigned conservation scores. The user can specify the number of epitopes to select, the percentage of HLA alleles and antigens that have to be covered by the selected epitopes, and a HLA binding threshold that specifies at what point an peptides is considered to bind to a specific HLA allele. Once an epitope conservation file is provided, the user can define a minimum conservation to filter the epitopes entered.
+	
+	Please cite the original publication of OptiTope alongside ImmunoNodes.</manual>
+	<description>implements OptiTope, an integer linear programming based epitope selection framework proposed by Toussaint et al. As input it takes a file containing the results of EpitopePrediction and a tab-separated HLA allele file with assigned population frequencies, similar to the type of files that AlleleFrequency can generate. Optionally, EpitopeSelection accepts a tab-separated file containing the epitope sequences of the EpitopePrediction result with assigned conservation scores. The user can specify the number of epitopes to select, the percentage of HLA alleles and antigens that have to be covered by the selected epitopes, and a HLA binding threshold that specifies at what point an peptides is considered to bind to a specific HLA allele. Once an epitope conservation file is provided, the user can define a minimum conservation to filter the epitopes entered.
+	
+	Please cite the original publication of OptiTope alongside ImmunoNodes.</description>
+	<executableName>epitopeselection.py</executableName>
+	<executablePath>/usr/local/fred2_cmt/</executablePath>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for epitope selection" name="EpitopeSelection">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of EpitopeSelection" name="1">
+				<ITEM description="Path to the input file containing the epitope prediction results" name="input" type="input-file" required="true" supported_formats="*.tsv" value=""/>
+				<ITEM description="Path to the allele frequency file (one per line in new nomenclature)" name="alleles" type="input-file" supported_formats="*.tsv" required="true"  value=""/>
+				<ITEM description="Specifies how many epitopes should be selected" name="k" restrictions="1:" value="10" type="int" />
+				<ITEM description="Specifies the epitope binding threshold" name="threshold" type="float" value="0.0" />
+				<ITEM description="Specifies the desired allele coverage as percent" name="AlleleCoverage" type="float" restrictions="0.0:100.0" value="0.0" />
+				<ITEM description="Specifies the desired antigen coverage as percent" name="AntigenCoverage" type="float" restrictions="0.0:100.0" value="0.0" />
+				<ITEM description="Specifies the desired epitope conservation as percent" name="ConservationConstraint" type="float" restrictions="0.0:100.0" value="0.0" />
+				<ITEM description="path to the file containing the epitope conservation of each epitope of the input" name="Conservation" type="input-file"  required="false" value="" /> 
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.tsv" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="EpitopeSelection.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--alleles">
+			<mapping referenceName="EpitopeSelection.1.alleles"/>
+		</clielement>
+		<clielement optionIdentifier="--k">
+			<mapping referenceName="EpitopeSelection.1.k"/>
+		</clielement>
+		<clielement optionIdentifier="--threshold">
+			<mapping referenceName="EpitopeSelection.1.threshold"/>
+		</clielement>
+		<clielement optionIdentifier="-c_al">
+			<mapping referenceName="EpitopeSelection.1.AlleleCoverage"/>
+		</clielement>
+		<clielement optionIdentifier="-c_a">
+			<mapping referenceName="EpitopeSelection.1.AntigenCoverage"/>
+		</clielement>
+		<clielement optionIdentifier="-c_c">
+			<mapping referenceName="EpitopeSelection.1.ConservationConstraint"/>
+		</clielement>
+		<clielement optionIdentifier="-c">
+			<mapping referenceName="EpitopeSelection.1.Conservation"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="EpitopeSelection.1.output"/>
+		</clielement>
+	</cli>
+</tool>

@@ -1,0 +1,8 @@
+<mimetypes xmlns="http://www.ball-project.org/mimetypes">
+ <mimetype name="TSV" binary="false" description="tab-separated file" ext="tsv"/>
+ <mimetype name="FASTA" binary="false" ext="fasta" description="FASTA"/>
+ <mimetype name="FASTQ" binary="false" ext="fastq" description="FASTQ"/>
+ <mimetype name="SAM" binary="false" ext="sam" description="SAM"/>
+ <mimetype name="BAM" binary="true" ext="bam" description="BAM"/>
+ <mimetype name="CSV" binary="false" description="comma-separated file" ext="csv"/>
+</mimetypes>

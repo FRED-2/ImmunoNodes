@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<tool name="EpitopeAssembly" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>EpitopeAssembly optimizes the ordering of epitopes within a string-of-beads vaccine to maximize the recover of these epitopes during antigen processing. The output is a fasta file that contains the optimal ordered string-of-beads vaccine.
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.</manual>
+	<description>EpitopeAssembly optimizes the ordering of epitopes within a string-of-beads vaccine to maximize the recover of these epitopes during antigen processing. The output is a fasta file that contains the optimal ordered string-of-beads vaccine.
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.</description>
+	<executableName>epitopeassembly.py</executableName>
+	<executablePath>/usr/local/fred2_cmt/</executablePath>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for string-of-beads epitope assembly" name="EpitopeAssembly">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of EpitopeAssembly" name="1">
+				<ITEM description="Path to the input file" name="input" required="true" supported_formats="*.tsv" type="input-file" value=""/>
+				<ITEM description="The name of the prediction method" name="method" restrictions="proteasmm_i,netchop,proteasmm_c,pcm" type="string" value="pcm"/>
+				<ITEM description="Specifies how strong unwanted cleavage sites should be punished [0,1],where 0 means they will be ignored, and 1 the sum of all unwanted cleave sites is subtracted from the cleave site between two epitopes" name="weight" type="float" value="0.0"/>
+				<ITEM description="Specify whether the problem should be approximation or optimally solved" name="approximate" type="string" value="false" required="false" restrictions="true,false"/>
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.fasta" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="EpitopeAssembly.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--method">
+			<mapping referenceName="EpitopeAssembly.1.method"/>
+		</clielement>
+		<clielement optionIdentifier="--approximate">
+			<mapping referenceName="EpitopeAssembly.1.approximate"/>
+		</clielement>
+		<clielement optionIdentifier="--weight">
+			<mapping referenceName="EpitopeAssembly.1.weight"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="EpitopeAssembly.1.output"/>
+		</clielement>
+	</cli>
+</tool>
