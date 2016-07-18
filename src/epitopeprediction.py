@@ -141,7 +141,7 @@ def main():
 
     #write to TSV columns sequence method allele-scores...,protein-id/transcript-id
     with open(args.output, "w") as f:
-        proteins = "\tProtein ID" if args.type == "fasta" else ""
+        proteins = "\tAntigen ID" if args.type == "fasta" else ""
         alleles = result.columns
         f.write("Sequence\tMethod\t"+"\t".join(a.name for a in alleles)+proteins+"\n")
         for index, row in result.iterrows():
