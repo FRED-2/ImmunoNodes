@@ -87,18 +87,20 @@ def read_variant_effect_predictor(file, gene_filter=None):
         "synonymous_variant", "coding_sequence_variant"])
 
     with open(file, "r") as f:
-        for l in f:
+        for i,l in enumerate(f):
+            if i > 100:
+                break
             #skip comments
             if l.startswith("#") or l.strip() == "":
                 continue
 
-            chrom, gene_pos,var_id,ref,alt,_,filter_flag,info,_,_ = l.strip().split("\t")
+            chrom, gene_pos,var_id,ref,alt,_,filter_flag,info= l.strip().split("\t")[:8]
             coding = {}
             isSynonymous = False
 
             for co in info.split(","):
                 #Allele|Gene|Feature|Feature_type|Consequence|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|SYMBOL|SYMBOL_SOURCE|HGNC_ID|CCDS">
-                _,gene,transcript_id,transcript_type,var_type,_,transcript_pos,prot_pos,_,_,_,distance,strand,HGNC_ID,_,_,_ = co.strip().split("|")
+                _,gene,transcript_id,transcript_type,var_type,_,transcript_pos,prot_pos,_,_,_,distance,strand,HGNC_ID = co.strip().split("|")[:14]
 
                 #pass every other feature type except Transcript (RegulatoryFeature, MotifFeature.)
                 #pass genes that are uninterresting for us
@@ -111,7 +113,8 @@ def read_variant_effect_predictor(file, gene_filter=None):
 
                     #positioning in Fred2 is 0-based!!!
                     if transcript_pos != "":
-                        coding[transcript_id] = MutationSyntax(transcript_id, int(transcript_pos)-1, -1 if prot_pos  == "" else int(prot_pos)-1, co, "")
+                        coding[transcript_id] = MutationSyntax(transcript_id, int(transcript_pos.split("-")[0])-1, 
+                            -1 if prot_pos  == "" else int(prot_pos.split("-")[0])-1, co, "", geneID=HGNC_ID)
 
                 #is variant synonymous?
                 isSynonymous = any(t == "synonymous_variant" for t in var_type.split("&"))
@@ -201,6 +204,11 @@ def main():
         required=True,
         help='Path to the output file'
         )
+    model.add_argument(
+        '-etk','--etk',
+        action="store_true",
+        help=argparse.SUPPRESS
+        )
 
     args = model.parse_args()
 
@@ -258,6 +266,11 @@ def main():
                     proteins.append(Protein(protein_seq, gene_id=l.strip(), transcript_id=ensembl_ids[EAdapterFields.TRANSID]))
         epitopes = generate_peptides_from_proteins(proteins, int(args.length))
 
+    transcript_to_genes = {}
+    for v in variants:
+        for trans_id,coding in v.coding.iteritems():
+            transcript_to_genes[trans_id] = coding.geneID
+
     #read in allele list
     alleles = read_lines(args.alleles, in_type=Allele)
 
@@ -270,14 +283,24 @@ def main():
         for index, row in result.iterrows():
             p = index[0]
             method = index[1]
-            proteins = ",".join(set([prot.transcript_id.split(":")[0] for prot in p.get_all_proteins()]))
+            proteins = ",".join(set([transcript_to_genes[prot.transcript_id.split(":FRED2")[0]] for prot in p.get_all_proteins()]))
             vars_str = ""
+
             if args.vcf is not None:
-                vars_str = "\t"+"|".join(prot_id.replace("FRED2", "")+":"+",".join(repr(v) for v in p.get_variants_by_protein(prot_id))
+                vars_str = "\t"+"|".join(set(prot_id.split(":FRED2")[0]+":"+",".join(repr(v) for v in set(p.get_variants_by_protein(prot_id)))
                                                                             for prot_id in p.proteins.iterkeys()
-                                          if p.get_variants_by_protein(prot_id))
+                                          if p.get_variants_by_protein(prot_id)))
+            
             f.write(str(p)+"\t"+method+"\t"+"\t".join("%.3f"%row[a] for a in alleles)+"\t"+proteins+vars_str+"\n")
 
+    if args.etk:
+        with open(args.output.rsplit(".",1)[0]+"_etk.tsv", "w") as g:
+            alleles = result.columns
+            g.write("Alleles:\t"+"\t".join(a.name for a in alleles)+"\n")
+            for index, row in result.iterrows():
+                p = index[0]
+                proteins = " ".join(set([transcript_to_genes[prot.transcript_id.split(":FRED2")[0]] for prot in p.get_all_proteins()]))
+                g.write(str(p)+"\t"+"\t".join("%.3f"%row[a] for a in alleles)+"\t"+proteins+"\n")
     return 0
 
 

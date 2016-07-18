@@ -84,8 +84,10 @@ def main():
     args = model.parse_args()
 
     version = "" if args.version == "" else args.version
-    options = "--"+args.reference if args.paired == "" else args.paired+" "+"--"+args.reference
-
+    if args.method == "optitype":
+        options = "--"+args.reference if args.paired == "" else args.paired+" "+"--"+args.reference
+    else:
+        options = "" if args.paired == "" else "-2 "+args.paired
     genotype = HLATypingFactory(args.method).predict(args.input, "/tmp/", options=options)
     with open(args.output, "w") as f:
         f.write("\n".join("HLA-"+a.name for a in genotype))

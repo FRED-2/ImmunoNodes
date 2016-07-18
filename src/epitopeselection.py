@@ -62,13 +62,13 @@ def generate_epitope_result(input, allele_file):
     r_raw = pandas.read_csv(input, sep="\t")
     res_dic = {}
     method = r_raw.loc[0, "Method"]
-    columns = set(["Sequence", "Method", "Protein ID", "Variant"])
+    columns = set(["Sequence", "Method", "Antigen ID", "Variant"])
     alleles_raw = [c for c in r_raw.columns if c not in columns]
     for k, row in r_raw.iterrows():
         seq = row["Sequence"]
         protPos = collections.defaultdict(list)
         try:
-            protPos = {Protein(p, gene_id=p, transcript_id=p): [0] for p in str(row["Protein ID"]).split(",")}
+            protPos = {Protein(p, gene_id=p, transcript_id=p): [0] for p in str(row["Antigen ID"]).split(",")}
         except KeyError:
             pass
         pep = Peptide(seq, protein_pos=protPos)
@@ -234,10 +234,10 @@ def main():
     # set constraints
     if args.cons_allele > 0:
         #print "allele constraint enforced"
-        opti.activate_allele_coverage_const(float(args.cons_allele) / 100)
+        opti.activate_allele_coverage_const(float(args.cons_allele) / 100.0)
 
     if args.cons_antigen > 0:
-        opti.activate_antigen_coverage_const(float(args.cons_antigen) / 100)
+        opti.activate_antigen_coverage_const(float(args.cons_antigen) / 100.0)
 
     if args.cons_conservation > 0:
         if args.conservation:
