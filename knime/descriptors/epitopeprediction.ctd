@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<tool name="EpitopePredicton" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>EpitopePrediction consumes two files, namely, a text file containing HLA alleles, one per line, in new nomenclature (see http://hla.alleles.org), and a text file either containing protein sequences in FASTA format or short peptide sequences, one per line. The node returns a tab separated file containing for each peptide the predicted score for each allele. 
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.</manual>
+	<description>EpitopePrediction consumes two files, namely, a text file containing HLA alleles, one per line, in new nomenclature (see http://hla.alleles.org), and a text file either containing protein sequences in FASTA format or short peptide sequences, one per line. The node returns a tab separated file containing for each peptide the predicted score for each allele. 
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.</description>
+	<executablePath>/usr/local/fred2_cmt/</executablePath>
+	<executableName>epitopeprediction.py</executableName>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for epitope prediction" name="EpitopePredicton">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of EpitopePredicton" name="1">
+				<ITEM description="The name of the prediction method" name="method" restrictions="netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas" type="string" value="bimas"/>
+				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.tsv,*.fasta" value=""/>
+				<ITEM description="The data type of the input (fasta, peptide list)" name="type" restrictions="fasta,peptide" type="string" value="fasta"/>
+				<ITEM description="The length of peptides" name="length" restrictions="8:16" type="int" value="9"/>
+				<ITEM description="Path to the allele file (one per line in new nomenclature)" name="alleles" supported_formats="*.tsv" required="true" type="input-file" value=""/>
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.tsv" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--method">
+			<mapping referenceName="EpitopePredicton.1.method"/>
+		</clielement>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="EpitopePredicton.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--type">
+			<mapping referenceName="EpitopePredicton.1.type"/>
+		</clielement>
+		<clielement optionIdentifier="--length">
+			<mapping referenceName="EpitopePredicton.1.length"/>
+		</clielement>
+		<clielement optionIdentifier="--alleles">
+			<mapping referenceName="EpitopePredicton.1.alleles"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="EpitopePredicton.1.output"/>
+		</clielement>
+	</cli>
+</tool>

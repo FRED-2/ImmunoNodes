@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<tool name="SpacerDesign" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>SpacerDesign similar to the EpitopeAssembly node, it also consumes a peptide list and generates a TSP instance. Additionally, it calculates short spacer sequences connecting two epitopes to increase the cleavage likelihood of the epitopes while simultaneously reducing the formation of neoepitopes. The user has to specify an epitope prediction model in addition to the required cleavage site model. The output, like in EpitopeAssembly, is a FASTA file containing the designed string-of-beads vaccine.
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.
+	</manual>
+	<description>SpacerDesign similar to the EpitopeAssembly node, it also consumes a peptide list and generates a TSP instance. Additionally, it calculates short spacer sequences connecting two epitopes to increase the cleavage likelihood of the epitopes while simultaneously reducing the formation of neoepitopes. The user has to specify an epitope prediction model in addition to the required cleavage site model. The output, like in EpitopeAssembly, is a FASTA file containing the designed string-of-beads vaccine.
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.
+	</description>
+	<executableName>spacerdesign.py</executableName>
+	<executablePath>/usr/local/fred2_cmt/</executablePath>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for epitope prediction" name="SpacerDesign">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of EpitopePredicton" name="1">
+				<ITEM description="The name of the prediction method" name="EpitopeMethod" restrictions="smmpmbec,syfpeithi,smm,arb,epidemix,comblibsidney,bimas" type="string" value="bimas"/>
+				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.tsv" value=""/>
+				<ITEM description="The name of the prediction method" name="CleavageMethod" restrictions="proteasmm_i,proteasmm_c,pcm" type="string" value="pcm"/>
+				<ITEM description="Specifies the epitope binding threshold" name="threshold" type="float" value="0" />
+				<ITEM description="Specifies the first-order preference of the user in the model [0,1] (default 0.99)" name="alpha" type="float" value="0.99" restrictions="0:1" />
+				<ITEM description="Specifies the second-order preference of the user in the model [0,1] (default 0)." name="beta" type="float" value="0" restrictions="0:1" />
+				<ITEM description="Specifies the maximal length of the spacer" name="k" restrictions="1:10" value="6" type="int" />
+				<ITEM description="Path to the allele frequency file (one per line in new nomenclature)" name="alleles" supported_formats="*.tsv" required="true" type="input-file" value=""/>
+				<ITEM description="Specify whether the problem should be approximation or optimally solved" name="approximate" type="string" value="false" restrictions="true,false"/>
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.fasta" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--epitope_prediction">
+			<mapping referenceName="SpacerDesign.1.EpitopeMethod"/>
+		</clielement>
+		<clielement optionIdentifier="--cleavage_prediction">
+			<mapping referenceName="SpacerDesign.1.CleavageMethod"/>
+		</clielement>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="SpacerDesign.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--alpha">
+			<mapping referenceName="SpacerDesign.1.alpha"/>
+		</clielement>
+		<clielement optionIdentifier="--beta">
+			<mapping referenceName="SpacerDesign.1.beta"/>
+		</clielement>
+		<clielement optionIdentifier="--max_length">
+			<mapping referenceName="SpacerDesign.1.k"/>
+		</clielement>
+		<clielement optionIdentifier="--threshold">
+			<mapping referenceName="SpacerDesign.1.threshold"/>
+		</clielement>
+		<clielement optionIdentifier="--alleles">
+			<mapping referenceName="SpacerDesign.1.alleles"/>
+		</clielement>
+		<clielement optionIdentifier="--approximate">
+			<mapping referenceName="SpacerDesign.1.approximate"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="SpacerDesign.1.output"/>
+		</clielement>
+	</cli>
+</tool>
