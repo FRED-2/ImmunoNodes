@@ -46,7 +46,6 @@ def read_lines(file, in_type=Peptide):
     with open(file, "r") as f:
         for l in f:
             if not l.startswith("#") and l.strip() != "" and not l.startswith("Epitope") and not l.startswith("Sequence"):
-                print l, l.split()
                 pep = l.split()[0].strip()
                 peptides.append(in_type(pep))
     return peptides
