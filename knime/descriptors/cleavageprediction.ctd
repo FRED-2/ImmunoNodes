@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<tool name="CleavagePrediction" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>CleavagePrediction takes a FASTA file and predicts the cleavage probability for each site. In addition, the user can specify a peptide length, which in turn will alter the output to a tab-separated text file containing peptide sequences of the specified length with their C-terminal cleavage score.
+
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.
+	</manual>
+	<description>CleavagePrediction takes a FASTA file and predicts the cleavage probability for each site. In addition, the user can specify a peptide length, which in turn will alter the output to a tab-separated text file containing peptide sequences of the specified length with their C-terminal cleavage score.
+
+		Please cite the original publication of the used prediction method alongside ImmunoNodes.</description>
+	<executableName>cleavageprediction.py</executableName>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for cleavage site prediction" name="CleavagePrediction">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" tags="advanced"  restrictions="1.0" type="string" value="1.0"/>
+			<NODE description="Parameters of CleavagePrediction" name="1">
+				<ITEM description="The name of the prediction method" name="method" restrictions="proteasmm_i,netchop,proteasmm_c,pcm" type="string" value="pcm"/>
+				<ITEM description="Path to the input file (in fasta format)" name="input" required="true" supported_formats="*.fasta" type="input-file" value=""/>
+				<ITEM description="The length of peptides" name="length" restrictions="0:" type="int" value="0"/>
+				<ITEM description="Additional options that get directly past to the tool" name="options" type="string" value=""/>
+				<ITEM description="Path to the output file" name="output" required="true" type="output-file" supported_formats="*.tsv" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--method">
+			<mapping referenceName="CleavagePrediction.1.method"/>
+		</clielement>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="CleavagePrediction.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--length">
+			<mapping referenceName="CleavagePrediction.1.length"/>
+		</clielement>
+		<clielement optionIdentifier="--options">
+			<mapping referenceName="CleavagePrediction.1.options"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="CleavagePrediction.1.output"/>
+		</clielement>
+	</cli>
+</tool>

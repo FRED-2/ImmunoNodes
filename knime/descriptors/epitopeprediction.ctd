@@ -6,13 +6,12 @@
 	<description>EpitopePrediction consumes two files, namely, a text file containing HLA alleles, one per line, in new nomenclature (see http://hla.alleles.org), and a text file either containing protein sequences in FASTA format or short peptide sequences, one per line. The node returns a tab separated file containing for each peptide the predicted score for each allele. 
 	
 	Please cite the original publication of the used prediction method alongside ImmunoNodes.</description>
-	<executablePath>/usr/local/fred2_cmt/</executablePath>
 	<executableName>epitopeprediction.py</executableName>
 	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
 		<NODE description="Commandline tool for epitope prediction" name="EpitopePredicton">
 			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
 			<NODE description="Parameters of EpitopePredicton" name="1">
-				<ITEM description="The name of the prediction method" name="method" restrictions="netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas" type="string" value="bimas"/>
+				<ITEM description="The name of the prediction method" name="method" restrictions="arb,bimas,calisimm,comblibsidney,hammer,netctlpan,netmhc,netmhcii,netmhciipan,netmhcpan,pickpocket,smm,smmpmbec,svmhc,syfpeithi,tepitopepan,unitope" type="string" value="bimas"/>
 				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.tsv,*.fasta" value=""/>
 				<ITEM description="The data type of the input (fasta, peptide list)" name="type" restrictions="fasta,peptide" type="string" value="fasta"/>
 				<ITEM description="The length of peptides" name="length" restrictions="8:16" type="int" value="9"/>

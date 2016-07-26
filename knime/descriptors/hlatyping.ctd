@@ -9,14 +9,13 @@
 	Please the original publication of the used prediction method alongside ImmunoNodes.
 	</description>
 	<executableName>hlatyping.py</executableName>
-	<executablePath>/usr/local/fred2_cmt/</executablePath>
 	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
 		<NODE description="Commandline tool for HLA typing" name="HLATyping">
 			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
 			<NODE description="Parameters of HLATyping" name="1">
-				<ITEM description="The name of the prediction method" name="method" restrictions="optitype" type="string" value="optitype"/>
+				<ITEM description="The name of the prediction method" name="method" restrictions="optitype,seq2hla" type="string" value="optitype"/>
 				<ITEM description="Path to the input file" name="input" supported_formats="*.bam,*.sam,*.fastq" type="input-file" required="true" value=""/>
-				<ITEM description="Path to an additional input file for pair-end" name="paired-input" supported_formats="*.bam,*.sam,*.fastq" type="input-file" required="false" value=""/>
+				<ITEM description="Path to an additional input file for pair-end" name="paired-input" supported_formats="*.bam,*.sam,*.fastq,*.fq,*.fastq.gz,*.fq.gz" type="input-file" required="false" value=""/>
 				<ITEM description="Reference Library" name="reference" type="string" restrictions="rna,dna" value="dna" />
 				<ITEM description="Path to the output file" name="output"  required="true" supported_formats="*.tsv,*.csv" type="output-file" value=""/>
 			</NODE>

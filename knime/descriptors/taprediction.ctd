@@ -9,7 +9,7 @@
 	Please cite the original publication of the used prediction method alongside ImmunoNodes.
 	</description>
 	<executableName>taprediction.py</executableName>
-	<executablePath>/usr/local/fred2_cmt/</executablePath>
+
 	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
 		<NODE description="Commandline tool for TAP prediction" name="TAPrediction">
 			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>

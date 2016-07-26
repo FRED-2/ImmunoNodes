@@ -9,12 +9,11 @@
 	Please cite the original publication of the used prediction method alongside ImmunoNodes.
 	</description>
 	<executableName>spacerdesign.py</executableName>
-	<executablePath>/usr/local/fred2_cmt/</executablePath>
 	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
 		<NODE description="Commandline tool for epitope prediction" name="SpacerDesign">
 			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
 			<NODE description="Parameters of EpitopePredicton" name="1">
-				<ITEM description="The name of the prediction method" name="EpitopeMethod" restrictions="smmpmbec,syfpeithi,smm,arb,epidemix,comblibsidney,bimas" type="string" value="bimas"/>
+				<ITEM description="The name of the prediction method" name="EpitopeMethod" restrictions="smmpmbec,syfpeithi,smm,arb,comblibsidney,bimas" type="string" value="bimas"/>
 				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.tsv" value=""/>
 				<ITEM description="The name of the prediction method" name="CleavageMethod" restrictions="proteasmm_i,proteasmm_c,pcm" type="string" value="pcm"/>
 				<ITEM description="Specifies the epitope binding threshold" name="threshold" type="float" value="0" />

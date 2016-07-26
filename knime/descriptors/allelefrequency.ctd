@@ -2,7 +2,6 @@
 <tool name="AlleleFrequency" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
 	<manual>AlleleFrequency takes a list of HLA alleles and assigns the probability that a given HLA allele occurs in the user-specified geographic region or population extraced from dbMHC. The output is a tab-separated file, each row containing an HLA allele and its probability of occurrence in the given region or population.</manual>
 	<description>AlleleFrequency takes a list of HLA alleles and assigns the probability that a given HLA allele occurs in the user-specified geographic region or population extraced from dbMHC. The output is a tab-separated file, each row containing an HLA allele and its probability of occurrence in the given region or population.</description>
-	<executablePath>/usr/local/fred2_cmt/</executablePath>
 	<executableName>allelefrequency.py</executableName>
 	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
 		<NODE description="Commandline tool for allele frequency assignment" name="AlleleFrequency">
