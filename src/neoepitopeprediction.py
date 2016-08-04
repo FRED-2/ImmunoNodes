@@ -228,9 +228,7 @@ def main():
                     if l != "":
                         protein_ids.append(l)
         if args.type == "VEP":
-            print "in here"
             variants = read_variant_effect_predictor(args.vcf, gene_filter=protein_ids)
-            print variants
         else:
             variants = read_annovar_exonic(args.vcf, gene_filter=protein_ids)
 
