@@ -88,8 +88,7 @@ def read_variant_effect_predictor(file, gene_filter=None):
 
     with open(file, "r") as f:
         for i,l in enumerate(f):
-            if i > 100:
-                break
+
             #skip comments
             if l.startswith("#") or l.strip() == "":
                 continue
@@ -213,6 +212,7 @@ def main():
     args = model.parse_args()
 
     martDB = MartsAdapter(biomart=MARTDBURL[args.reference.upper()])
+    transcript_to_genes = {}
 
     if args.vcf is None and args.proteins is None:
         sys.stderr.write("At least a vcf file or a protein id file has to be provided.\n")
@@ -250,10 +250,13 @@ def main():
             sys.stderr.write("No variants left after filtering. Please refine your filtering criteria.\n")
             return -1
 
-        start = time.time()
         epitopes = filter(lambda x:any(x.get_variants_by_protein(tid) for tid in x.proteins.iterkeys()),
                         generate_peptides_from_variants(variants,
                                                 int(args.length), martDB, EIdentifierTypes.ENSEMBL))
+
+        for v in variants:
+            for trans_id,coding in v.coding.iteritems():
+                transcript_to_genes[trans_id] = coding.geneID
 
     #else: generate protein sequences from given HGNC IDs and than epitopes
     else:
@@ -263,13 +266,10 @@ def main():
                 ensembl_ids = martDB.get_ensembl_ids_from_id(l.strip(), type=EIdentifierTypes.HGNC)[0]
                 protein_seq = martDB.get_product_sequence(ensembl_ids[EAdapterFields.PROTID])
                 if protein_seq is not None:
+                    transcript_to_genes[ensembl_ids[EAdapterFields.TRANSID]] = l.strip()
                     proteins.append(Protein(protein_seq, gene_id=l.strip(), transcript_id=ensembl_ids[EAdapterFields.TRANSID]))
         epitopes = generate_peptides_from_proteins(proteins, int(args.length))
 
-    transcript_to_genes = {}
-    for v in variants:
-        for trans_id,coding in v.coding.iteritems():
-            transcript_to_genes[trans_id] = coding.geneID
 
     #read in allele list
     alleles = read_lines(args.alleles, in_type=Allele)
