@@ -6,7 +6,7 @@ services:
 
 language: python
 
-before_install:
+install:
   - docker build -t aperim/immunonodes docker/
   
 script:
