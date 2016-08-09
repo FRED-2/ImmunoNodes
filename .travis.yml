@@ -1,0 +1,14 @@
+#Continiues Docker image deploiment of APERIMs EpitopeSelector
+sudo: required
+
+services:
+  - docker
+
+language: python
+
+before_install:
+  - docker build -t aperim/immunonodes docker/
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push aperim/epitopeselector;
+    fi
