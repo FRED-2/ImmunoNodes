@@ -10,7 +10,7 @@ before_install:
   - docker build -t aperim/immunonodes docker/
   
 script:
-  docker run aperim/immunonodes/  epitopeprediction.py -h
+  docker run aperim/immunonodes  epitopeprediction.py -h
   
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
