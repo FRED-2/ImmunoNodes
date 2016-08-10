@@ -76,3 +76,13 @@ docs/_build/
 target/
 
 # Created by .ignore support plugin (hsz.mobi)
+.DS_Store
+.dropbox
+"Icon\r"
+src/example_HLA_freq.tsv
+src/generate_HLA_dependent_distant_tries.py
+src/neoepitopeselection.py
+src/test_neo_selection.tsv
+src/test_new_vcf.tsv
+src/test_new_vcf_etk.tsv
+src/test_protein.tsv
