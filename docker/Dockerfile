@@ -38,7 +38,7 @@ RUN pip install --upgrade pip
 
 #LKH solver here
 RUN mkdir -p /usr/src/LKH \
-    && wget http://www-bs3.informatik.uni-tuebingen.de/extern/schubert/LKH-2.0.7.tgz -O LKH.tgz \
+    && wget --secure-protocol=TLSv1 http://www-bs3.informatik.uni-tuebingen.de/extern/schubert/LKH-2.0.7.tgz -O LKH.tgz \
     && tar -xzf LKH.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
     && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
@@ -47,7 +47,7 @@ RUN mkdir -p /usr/src/LKH \
 
 #HLA Typing
 #OptiType dependecies
-RUN wget https://www.hdfgroup.org/ftp/HDF5/current/bin/linux-centos7-x86_64-gcc485/hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
+RUN wget --secure-protocol=TLSv1 https://www.hdfgroup.org/ftp/HDF5/current/bin/linux-centos7-x86_64-gcc485/hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
     && tar -xvf hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
     && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/bin/* /usr/local/bin/ \
     && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/lib/* /usr/local/lib/ \
@@ -111,7 +111,7 @@ ENV PATH /usr/local/bin/OptiType:/usr/local/bin/seq2hla:$PATH
 #Prediction Tools (generate a zip with all prediction tool binaries and wget it form our servers)
 #UN wget http://abi.informatik.uni-tuebingen.de/pkg_predictors.tar.gz \
 
-RUN wget http://www-bs3.informatik.uni-tuebingen.de/extern/schubert/pkg_predictors.tar.gz \
+RUN wget --secure-protocol=TLSv1 http://www-bs3.informatik.uni-tuebingen.de/extern/schubert/pkg_predictors.tar.gz \
     && tar -xvf pkg_predictors.tar.gz  -C /usr/local/ \
     && rm pkg_predictors.tar.gz
 
