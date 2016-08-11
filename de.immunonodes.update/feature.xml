@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.immunonodes.update"
+      label="Immunonodes Update Site"
+      version="1.0.0.qualifier">
+
+   <includes
+         id="de.immunonodes.feature"
+         version="0.0.0"/>
+</feature>
