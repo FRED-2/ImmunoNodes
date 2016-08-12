@@ -3,25 +3,12 @@ FROM ubuntu:14.04
 MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 
 
-RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
-&& chmod -R 777 /ImmunoNodes/ \
-&& ls -lah /ImmunoNodes
-
-COPY src /ImmunoNodes/src/
-COPY contrib /ImmunoNodes/contrib/
-
-RUN tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/
-
-RUN tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
-    && make -C /usr/src/LKH/LKH-2.0.7 \
-    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
-    && rm -rf /ImmunoNodes/contrib/
-
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
 && add-apt-repository ppa:george-edison55/cmake-3.x \
 && add-apt-repository ppa:ubuntu-toolchain-r/test \
 && apt-get update && apt-get install -y \
+    git-lfs \
     gcc-4.9 \
     g++-4.9 \
     build-essential \
@@ -46,9 +33,24 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && apt-get clean \
 && apt-get purge \
-&& rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
+&& chmod -R 777 /ImmunoNodes/ \
+&& ls -lah /ImmunoNodes
 
+COPY src /ImmunoNodes/src/
+COPY contrib /ImmunoNodes/contrib/
 
+RUN git lfs install \
+    && cd /ImmunoNodes/contrib/ \
+    && git lfs fetch \
+    && ls -lah \
+    && git lfs pull \
+    && tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
+    &&tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
+    && make -C /usr/src/LKH/LKH-2.0.7 \
+    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
+    && rm -rf /ImmunoNodes/contrib/
 
 #HLA Typing
 #OptiType dependecies
