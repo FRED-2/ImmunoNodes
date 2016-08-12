@@ -7,7 +7,7 @@ services:
 language: python
 
 install:
-  - docker build -t aperim/immunonodes:v1 .
+  - docker build -t aperim/immunonodes .
   
 script:
   docker run aperim/immunonodes  epitopeprediction.py -h
