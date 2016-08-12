@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && add-apt-repository ppa:george-edison55/cmake-3.x \
 && add-apt-repository ppa:ubuntu-toolchain-r/test \
 && apt-get update && apt-get install -y \
-    git-lfs \
     gcc-4.9 \
     g++-4.9 \
     build-essential \
@@ -37,6 +36,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
 && chmod -R 777 /ImmunoNodes/ \
 && ls -lah /ImmunoNodes
+&& curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash 
 
 COPY src /ImmunoNodes/src/
 COPY contrib /ImmunoNodes/contrib/
