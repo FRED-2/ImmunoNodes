@@ -31,10 +31,11 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && apt-get clean \
 && apt-get purge \
-&& rm -rf /var/lib/apt/lists/* \
-&& mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib
+&& rm -rf /var/lib/apt/lists/*
 
-COPY src /ImmunoNodes/src \
+RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib
+
+COPY ./src /ImmunoNodes/src/ \
     && chmod -R 777 /ImmunoNodes/src/
 
 #HLA Typing
@@ -103,7 +104,7 @@ RUN pip install git+https://github.com/FRED-2/Fred2@master
 
 
 #Get Fred2 COMMANDLINE TOOLS
-COPY ./contrib /ImmunoNodes/contrib \
+COPY ./contrib /ImmunoNodes/contrib/ \
     && tar -xvf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
