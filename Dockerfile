@@ -2,6 +2,13 @@
 FROM ubuntu:14.04
 MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 
+
+RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
+&& ls -lah /ImmunoNodes
+
+COPY ./src /ImmunoNodes/src/ \
+    && chmod -R 777 /ImmunoNodes/src/
+
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
 && add-apt-repository ppa:george-edison55/cmake-3.x \
@@ -33,11 +40,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get purge \
 && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
-&& ls -lah /ImmunoNodes
 
-COPY ./src /ImmunoNodes/src/ \
-    && chmod -R 777 /ImmunoNodes/src/
 
 #HLA Typing
 #OptiType dependecies
