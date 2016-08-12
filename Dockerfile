@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get purge
 
 
-RUN git clone -b feature/continues_docker_deploiment https://github.com/FRED-2/ImmunoNodes.git \
+RUN git clone https://github.com/FRED-2/ImmunoNodes.git \
     && cd /ImmunoNodes \
     && git lfs fetch \
     && ls -lah contrib\
