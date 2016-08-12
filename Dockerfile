@@ -32,8 +32,6 @@ RUN apt-get update && apt-get install -y software-properties-common \
     libboost-dev \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && rm -rf /var/lib/apt/lists/* \
-&& mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
-&& chmod -R 777 /ImmunoNodes/ \
 && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
 && apt-get install -y git-lfs \
 && git lfs install \
@@ -51,6 +49,7 @@ RUN git clone -b feature/continues_docker_deploiment https://github.com/FRED-2/I
     && make -C /usr/src/LKH/LKH-2.0.7 \
     && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
     && rm -rf /ImmunoNodes/contrib/
+    && chmod -R 777 /ImmunoNodes/ \
 
 #HLA Typing
 #OptiType dependecies
