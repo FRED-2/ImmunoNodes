@@ -44,14 +44,15 @@ RUN git clone -b feature/continues_docker_deploiment https://github.com/FRED-2/I
     && git lfs fetch \
     && ls -lah contrib\
     && git lfs pull \
+    && chmod -R 777 /ImmunoNodes/ \
     && ls -lah contrib\
-    && mkdir /usr/src \
+    && mkdir /usr/src/LKH \
     && tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
     && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
     && rm -rf /ImmunoNodes/contrib/
-    && chmod -R 777 /ImmunoNodes/ \
+
 
 #HLA Typing
 #OptiType dependecies
