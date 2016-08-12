@@ -5,7 +5,7 @@ MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
-&& apt-get install python-software-properties \
+&& apt-get install -y python-software-properties \
 && add-apt-repository ppa:git-core/ppa
 && add-apt-repository ppa:george-edison55/cmake-3.x \
 && add-apt-repository ppa:ubuntu-toolchain-r/test \
@@ -32,14 +32,14 @@ RUN apt-get update && apt-get install -y software-properties-common \
     libbz2-dev \
     libboost-dev \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
-&& apt-get clean \
-&& apt-get purge \
 && rm -rf /var/lib/apt/lists/* \
 && mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
 && chmod -R 777 /ImmunoNodes/ \
 && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
 && apt-get install -y git-lfs \
-&& git lfs install
+&& git lfs install \
+&& apt-get clean \
+&& apt-get purge
 
 
 COPY src /ImmunoNodes/src/
