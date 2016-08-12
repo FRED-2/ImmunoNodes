@@ -6,7 +6,7 @@ MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get install -y python-software-properties \
-&& add-apt-repository ppa:git-core/ppa
+&& add-apt-repository ppa:git-core/ppa \
 && add-apt-repository ppa:george-edison55/cmake-3.x \
 && add-apt-repository ppa:ubuntu-toolchain-r/test \
 && apt-get update && apt-get install -y \
