@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
 && chmod -R 777 /ImmunoNodes/ \
 && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
-&& apt-get install git-lfs \
+&& apt-get install -y git-lfs \
 && git lfs install
 
 
