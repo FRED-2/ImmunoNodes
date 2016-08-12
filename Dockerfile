@@ -8,6 +8,13 @@ RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
 && ls -lah /ImmunoNodes
 
 COPY src /ImmunoNodes/src/
+COPY contrib /ImmunoNodes/contrib/
+
+RUN tar -xvf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
+    && tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
+    && make -C /usr/src/LKH/LKH-2.0.7 \
+    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
+    && rm -rf /ImmunoNodes/contrib/
 
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
