@@ -5,6 +5,8 @@ MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
+&& apt-get install python-software-properties \
+&& add-apt-repository ppa:git-core/ppa
 && add-apt-repository ppa:george-edison55/cmake-3.x \
 && add-apt-repository ppa:ubuntu-toolchain-r/test \
 && apt-get update && apt-get install -y \
@@ -35,19 +37,20 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && rm -rf /var/lib/apt/lists/* \
 && mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
 && chmod -R 777 /ImmunoNodes/ \
-&& ls -lah /ImmunoNodes
-&& curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash 
+&& curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
+&& apt-get install git-lfs \
+&& git lfs install
+
 
 COPY src /ImmunoNodes/src/
 COPY contrib /ImmunoNodes/contrib/
 
-RUN git lfs install \
-    && cd /ImmunoNodes/contrib/ \
+RUN cd /ImmunoNodes/contrib/ \
     && git lfs fetch \
     && ls -lah \
     && git lfs pull \
     && tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
-    &&tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
+    && tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
     && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
     && rm -rf /ImmunoNodes/contrib/
