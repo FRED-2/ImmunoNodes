@@ -4,10 +4,10 @@ MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 
 
 RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
+&& chmod -R 777 /ImmunoNodes/ \
 && ls -lah /ImmunoNodes
 
-COPY ./src /ImmunoNodes/src/ \
-    && chmod -R 777 /ImmunoNodes/src/
+COPY src /ImmunoNodes/src/
 
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
@@ -108,7 +108,7 @@ RUN pip install git+https://github.com/FRED-2/Fred2@master
 
 
 #Get Fred2 COMMANDLINE TOOLS
-COPY ./contrib /ImmunoNodes/contrib/ \
+COPY contrib /ImmunoNodes/contrib/ \
     && tar -xvf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
