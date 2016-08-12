@@ -7,7 +7,7 @@ services:
 language: python
 
 install:
-  - docker build -t aperim/immunonodes docker/
+  - docker build -t aperim/immunonodes:v1 docker/
   
 script:
   docker run aperim/immunonodes  epitopeprediction.py -h
@@ -15,5 +15,5 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push aperim/epitopeselector;
+    docker push aperim/immunonodes;
     fi
