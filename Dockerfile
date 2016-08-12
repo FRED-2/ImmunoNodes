@@ -31,7 +31,9 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && apt-get clean \
 && apt-get purge \
-&& rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& mkdir /ImmunoNOdes/src /ImmunoNOdes/contrib \
+
 
 COPY src /ImmunNodes/src \
     && chmod -R 777 /ImmunoNodes/src/
