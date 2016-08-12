@@ -33,7 +33,8 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get purge \
 && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib
+RUN mkdir /ImmunoNodes /ImmunoNodes/src /ImmunoNodes/contrib \
+&& ls -lah /ImmunoNodes
 
 COPY ./src /ImmunoNodes/src/ \
     && chmod -R 777 /ImmunoNodes/src/
