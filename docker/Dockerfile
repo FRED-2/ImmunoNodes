@@ -99,7 +99,7 @@ RUN pip install git+https://github.com/FRED-2/Fred2@master
 
 
 #Get Fred2 COMMANDLINE TOOLS
-COPY ./ImmunoNodes /ImmunoNodes \
+COPY ../ImmunoNodes /ImmunoNodes \
     && chmod -R 777 /ImmunoNodes/src/ \
     && tar -xvf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
