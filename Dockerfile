@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get clean \
 && apt-get purge \
 && rm -rf /var/lib/apt/lists/* \
-&& mkdir /ImmunoNOdes/src /ImmunoNOdes/contrib \
+&& mkdir /ImmunoNodes/src /ImmunoNodes/contrib \
 
 
 COPY src /ImmunNodes/src \
