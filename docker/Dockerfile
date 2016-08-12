@@ -97,10 +97,11 @@ RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
 #Fred2
 RUN pip install git+https://github.com/FRED-2/Fred2@master
 
+COPY ./src /ImmunNodes/src \
+    && chmod -R 777 /ImmunoNodes/src/
 
 #Get Fred2 COMMANDLINE TOOLS
-COPY ../ImmunoNodes /ImmunoNodes \
-    && chmod -R 777 /ImmunoNodes/src/ \
+COPY ./contrib /ImmunoNodes/contrib \
     && tar -xvf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
