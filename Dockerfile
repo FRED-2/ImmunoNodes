@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && mkdir /ImmunoNodes/src /ImmunoNodes/contrib \
 
 
-COPY src /ImmunNodes/src \
+COPY src /ImmunoNodes/src \
     && chmod -R 777 /ImmunoNodes/src/
 
 #HLA Typing
