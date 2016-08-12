@@ -1,1 +1,5 @@
-This folder structure and included files serve to use FRED-2 in KNIME via docker images. 
+ImmunoNodes is a collection of immunoinformatics command line tools and community KNIME nodes (http://www.knime.org), 
+written in Python with FRED 2 (http://fred-2.github.io/). It offers unified interfaces to many popular immunoinformatics 
+methods and covers a wide variety of standard applications, such as: (neo-)epitope, cleavage site, and TAP prediction, 
+as well as HLA genotyping, and epitope-based vaccine design. Building onto of KNIME, ImmunoNodes is a powerful and 
+intuitive toolbox to develop complex workflows, even without any programming experience.
