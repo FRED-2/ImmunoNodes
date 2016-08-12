@@ -42,8 +42,10 @@ RUN apt-get update && apt-get install -y software-properties-common \
 RUN git clone -b feature/continues_docker_deploiment https://github.com/FRED-2/ImmunoNodes.git \
     && cd /ImmunoNodes \
     && git lfs fetch \
-    && ls -lah \
+    && ls -lah contrib\
     && git lfs pull \
+    && ls -lah contrib\
+    && mkdir /usr/src \
     && tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
