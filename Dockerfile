@@ -33,6 +33,9 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get purge \
 && rm -rf /var/lib/apt/lists/*
 
+COPY src /ImmunNodes/src \
+    && chmod -R 777 /ImmunoNodes/src/
+
 #HLA Typing
 #OptiType dependecies
 RUN curl -O https://www.hdfgroup.org/ftp/HDF5/current/bin/linux-centos7-x86_64-gcc485/hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
@@ -97,8 +100,6 @@ RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
 #Fred2
 RUN pip install git+https://github.com/FRED-2/Fred2@master
 
-COPY ./src /ImmunNodes/src \
-    && chmod -R 777 /ImmunoNodes/src/
 
 #Get Fred2 COMMANDLINE TOOLS
 COPY ./contrib /ImmunoNodes/contrib \
