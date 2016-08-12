@@ -2,7 +2,6 @@
 FROM ubuntu:14.04
 MAINTAINER Benjamin Schubert <schubert@infomratik.uni-tuebingen.de>
 
-
 #installation of software
 RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get install -y python-software-properties \
@@ -42,10 +41,8 @@ RUN apt-get update && apt-get install -y software-properties-common \
 && apt-get purge
 
 
-COPY src /ImmunoNodes/src/
-COPY contrib /ImmunoNodes/contrib/
-
-RUN cd /ImmunoNodes/contrib/ \
+RUN git clone -b feature/continues_docker_deploiment https://github.com/FRED-2/ImmunoNodes.git \
+    && cd /ImmunoNodes \
     && git lfs fetch \
     && ls -lah \
     && git lfs pull \
@@ -118,15 +115,6 @@ RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
 
 #Fred2
 RUN pip install git+https://github.com/FRED-2/Fred2@master
-
-
-#Get Fred2 COMMANDLINE TOOLS
-COPY contrib /ImmunoNodes/contrib/ \
-    && tar -xvf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
-    && tar -xzf /ImmunoNodes/contrib/LKH.tgz -C /usr/src/LKH \
-    && make -C /usr/src/LKH/LKH-2.0.7 \
-    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
-    && rm -rf /ImmunoNodes/contrib/
 
 #set envirnomental variables for prediction methods
 ENV NETCHOP /usr/local/predictors/netchop/netchop-3.1
