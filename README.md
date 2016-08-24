@@ -1,4 +1,4 @@
-ImmunoNodes - Commandline tools and KINME extension of FRED 2
+ImmunoNodes - Commandline tools and KNIME extension of FRED 2
 =============================================================
 
 What is ImmunoNodes:
