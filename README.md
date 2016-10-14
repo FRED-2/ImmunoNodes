@@ -44,9 +44,10 @@ Documentation Resources
 
 Contact
 =======
-Benjamin Schubert
-schubert@informatik.uni-tuebingen.de
-University of Tübingen, Applied Bioinformatics,
-Center for Bioinformatics, Quantitative Biology Center,
-and Dept. of Computer Science,
-Sand 14, 72076 Tübingen, Germany
+Benjamin Schubert  
+schubert@informatik.uni-tuebingen.de  
+University of Tübingen, Applied Bioinformatics,  
+Center for Bioinformatics, Quantitative Biology Center,  
+and Dept. of Computer Science,  
+Sand 14, 72076 Tübingen, Germany  
+
