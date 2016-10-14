@@ -56,7 +56,7 @@ RUN git clone https://github.com/FRED-2/ImmunoNodes.git \
 
 #HLA Typing
 #OptiType dependecies
-RUN curl -O https://www.hdfgroup.org/ftp/HDF5/current/bin/linux-centos7-x86_64-gcc485/hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
+RUN curl -O https://support.hdfgroup.org/ftp/HDF5/current/bin/linux-centos7-x86_64-gcc485/hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
     && tar -xvf hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
     && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/bin/* /usr/local/bin/ \
     && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/lib/* /usr/local/lib/ \
@@ -69,12 +69,14 @@ ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 ENV HDF5_DIR /usr/local/
 
 RUN pip install --upgrade pip && pip install \
+    cython \
     numpy \
     pyomo \
     pysam \
     matplotlib \
     tables \
-    pandas
+    pandas \
+    future
 
 #installing optitype form git repository (version Dec 09 2015) and wirtig config.ini
 RUN git clone https://github.com/FRED-2/OptiType.git \
