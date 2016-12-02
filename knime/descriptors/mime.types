@@ -3,4 +3,5 @@ text/CSV csv
 text/FASTA fasta
 text/FASTQ fastq
 text/SAM sam
+text/TRIE trie
 binary/BAM bam

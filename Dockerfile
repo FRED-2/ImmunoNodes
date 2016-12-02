@@ -22,6 +22,8 @@ RUN apt-get update && apt-get install -y software-properties-common \
     python-dev \
     python-matplotlib \
     libmysqlclient-dev \
+    libboost-dev \
+    libboost-serialization-dev \
     zlib1g-dev \
     tcsh \
     gawk \
@@ -45,25 +47,22 @@ RUN git clone https://github.com/FRED-2/ImmunoNodes.git \
     && ls -lah contrib\
     && git lfs pull \
     && chmod -R 777 /ImmunoNodes/ \
-    && ls -lah contrib\
+    && ls -lah contrib \
     && mkdir /usr/src/LKH \
     && tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
     && make -C /usr/src/LKH/LKH-2.0.7 \
-    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
-    && rm -rf /ImmunoNodes/contrib/
+    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/
 
 
 #HLA Typing
 #OptiType dependecies
-RUN curl -O https://support.hdfgroup.org/ftp/HDF5/current/bin/linux-centos7-x86_64-gcc485/hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
-    && tar -xvf hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz \
-    && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/bin/* /usr/local/bin/ \
-    && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/lib/* /usr/local/lib/ \
-    && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/include/* /usr/local/include/ \
-    && mv hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/share/* /usr/local/share/ \
-    && rm -rf hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared/ \
-    && rm -f hdf5-1.8.17-linux-centos7-x86_64-gcc485-shared.tar.gz
+RUN tar -xvf /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared.tar.gz -C /ImmunoNodes/contrib/ \
+    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/bin/* /usr/local/bin/ \
+    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/lib/* /usr/local/lib/ \
+    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/include/* /usr/local/include/ \
+    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/share/* /usr/local/share/ \
+    && rm -rf /ImmunoNodes/contrib/
 
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 ENV HDF5_DIR /usr/local/
@@ -106,19 +105,25 @@ RUN git clone https://github.com/seqan/seqan.git seqan-src \
     && cd .. \
     && rm -rf seqan-src
 
-
-#Polysolver
-
-
 #Seq2HLA
 RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
     && sed -i -e '1i#!/usr/bin/env python\' seq2hla/seq2HLA.py \
     && mv seq2hla/ /usr/local/bin/ \
     && chmod 777 /usr/local/bin/seq2hla/seq2HLA.py 
 
-
 #Fred2
 RUN pip install git+https://github.com/FRED-2/Fred2@master
+
+
+#dist2self
+#download pre-generated tries
+RUN curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l8.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l8.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l9.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l9.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l10.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l10.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l11.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l11.trie" 
+
+#compile code
+RUN make -C /ImmunoNodes/src 
 
 #set envirnomental variables for prediction methods
 ENV NETCHOP /usr/local/predictors/netchop/netchop-3.1
