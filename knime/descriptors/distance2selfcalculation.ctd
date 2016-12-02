@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<tool name="Distance2SelfCalculation" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>Distance2SelfCalculation consumes one file, namely, a tab-separated file containing peptide sequences (e.g. output of epitope prediction). The name of the column containing the peptide sequences should be specified as well (default neopeptide). Optionally, a generated trie can be specified as well, otherwise one of the pre-caculated tries (default uniprot_proteome_l9; available uniprot_proteome_l8, uniprot_proteome_l10, uniprot_proteome_l11) has to be used. The node returns a tab separated file which contains the k closest peptides and their distances for each input peptide. The distance will be generated using the specified distance matrix. The ordering of the matrix used for the generation of the trie and the distance calculation has to be the same. Additionally, the length of the input peptides and the peptides used for the trie generation should be the same.</manual>
+	<description>Distance2SelfCalculation consumes one file, namely, a tab-separated file containing peptide sequences (e.g. output of epitope prediction). The name of the column containing the peptide sequences should be specified as well (default neopeptide). Optionally, a generated trie can be specified as well, otherwise one of the pre-caculated tries (default uniprot_proteome_l9; available uniprot_proteome_l8, uniprot_proteome_l10, uniprot_proteome_l11) has to be used. The node returns a tab separated file which contains the k closest peptides and their distances for each input peptide. The distance will be generated using the specified distance matrix. The ordering of the matrix used for the generation of the trie and the distance calculation has to be the same. Additionally, the length of the input peptides and the peptides used for the trie generation should be the same.</description>
+	<executableName>distance2selfcalculation.py</executableName>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for computation of distances between peptides and a set of proteins" name="Distance2SelfCalculation">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of Distance2SelfCalculation" name="1">
+				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.tsv" value=""/>
+				<ITEM description="Name of the column which contains the peptide sequences" name="sequence" required="false" type="string" value="neopeptide"/>
+				<ITEM description="Use one of the pre-generated tries (default uniprot_proteome_l9; available uniprot_proteome_l8, uniprot_proteome_l10, uniprot_proteome_l11). Pre-generated tries have been generated from uniprot human proteome for different peptide lengths. May not be combined with parameter --custom_trie" name="precalculated_trie" restrictions="uniprot_proteome_l8,uniprot_proteome_l9,uniprot_proteome_l10,uniprot_proteome_l11" required="false" type="string" value="uniprot_proteome_l9"/>
+				<ITEM description="Path to a self-generated custom trie. May not be combined with parameter --precalculated_trie" name="custom_trie" required="false" type="input-file" value="" supported_formats="*.trie"/>
+				<ITEM description="The number of closest peptides to find" name="k" required="false" type="int" value="1"/>
+				<ITEM description="Specifies BLOSUM distance matrix (default BLOSUM50; available BLOSUM45, BLOSUM90)" name="blosum" restrictions="BLOSUM50,BLOSUM45,BLOSUM90" required="false" type="string" value="BLOSUM50"/>
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.tsv" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="Distance2SelfCalculation.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--sequence">
+			<mapping referenceName="Distance2SelfCalculation.1.sequence"/>
+		</clielement>
+		<clielement optionIdentifier="--precalculated_trie">
+			<mapping referenceName="Distance2SelfCalculation.1.precalculated_trie"/>
+		</clielement>
+		<clielement optionIdentifier="--custom_trie">
+			<mapping referenceName="Distance2SelfCalculation.1.custom_trie"/>
+		</clielement>
+		<clielement optionIdentifier="--k">
+			<mapping referenceName="Distance2SelfCalculation.1.k"/>
+		</clielement>
+		<clielement optionIdentifier="--blosum">
+			<mapping referenceName="Distance2SelfCalculation.1.blosum"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="Distance2SelfCalculation.1.output"/>
+		</clielement>
+	</cli>
+</tool>

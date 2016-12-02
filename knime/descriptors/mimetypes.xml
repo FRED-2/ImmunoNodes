@@ -5,4 +5,5 @@
  <mimetype name="SAM" binary="false" ext="sam" description="SAM"/>
  <mimetype name="BAM" binary="true" ext="bam" description="BAM"/>
  <mimetype name="CSV" binary="false" description="comma-separated file" ext="csv"/>
+ <mimetype name="TRIE"binary="false" descritpion="trie representation" ext="trie"/>
 </mimetypes>

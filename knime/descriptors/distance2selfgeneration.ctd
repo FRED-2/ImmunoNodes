@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<tool name="Distance2SelfGeneration" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>Distance2SelfGeneration consumes one file, namely, a text file containing protein sequences in FASTA format. The node returns a file containing the generated trie data structure which can then be used for the distance to self computation. The trie is constructed from all peptides of the proteins of specified length.</manual>
+	<description>Distance2SelfGeneration consumes one file, namely, a text file containing protein sequences in FASTA format. The node returns a file containing the generated trie data structure which can then be used for the distance to self computation. The trie is constructed from all peptides of the proteins of specified length.</description>
+	<executableName>distance2selfgeneration.py</executableName>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for generation of tries for distance to self calculation" name="Distance2SelfGeneration">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of Distance2SelfGeneration" name="1">
+				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.fasta" value=""/>
+				<ITEM description="The length of peptides which should be generated" name="length" required="false" type="int" value="9"/>
+				<ITEM description="Specifies BLOSUM distance matrix (default BLOSUM50; available BLOSUM45, BLOSUM90)" name="blosum" restrictions="BLOSUM50,BLOSUM45,BLOSUM90" required="false" type="string" value="BLOSUM50"/>
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.trie" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--input">
+			<mapping referenceName="Distance2SelfGeneration.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--length">
+			<mapping referenceName="Distance2SelfGeneration.1.length"/>
+		</clielement>
+		<clielement optionIdentifier="--blosum">
+			<mapping referenceName="Distance2SelfGeneration.1.blosum"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="Distance2SelfGeneration.1.output"/>
+		</clielement>
+	</cli>
+</tool>

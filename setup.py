@@ -115,7 +115,9 @@ setup(
             'epitopeassembly=src.epitopeassembly.main',
             'neoepitopeprediction=src.neoepitopeprediction.main',
             'spacerdesign=src.spacerdesign.main',
-            'allelefrequency=src.allelefrequency.main'
+            'allelefrequency=src.allelefrequency.main',
+            'distance2selfgeneration=src.distance2selfgeneration.main',
+            'distance2selfcalculation=src.distance2selfcalculation.main'
         ],
     },
 
