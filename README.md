@@ -34,13 +34,29 @@ For KNIME integration you need:
 * Docker >= 1.9: https://www.docker.com/
 * Generic KNIME Node (with Docker support): (https://github.com/genericworkflownodes/GenericKnimeNodes)
 
-For commandline tool usage you can either use the provided Docker image and call the command lines within the Docker container (see our tutorial of how to do this). 
-Or you have to install FRED 2 and all its dependencies (see http://fred-2.github.io/getting-started/)
+For commandline tool usage you can either use the provided Docker image and call the command lines within the Docker container (see Installation). 
 
 
-Documentation Resources
------------------------
+Installation
+-------------
 
+To install ImmunoNodes, please make sure that you fulfill all prerequisites and have installed KNIME >= 3.1 and Docker >= 1.9.
+
+1) First, download ImmunoNodes' Docker image typing the following command on the command line:
+```
+docker pull aperim/immunonodes
+``` 
+
+and executing it by hitting ```Enter```. This will download the image from Docker Hub.
+
+2) ImmunoNodes is, as of now, available in KNIME's nightly branch.
+To install it, start KNIME and click ```Help->Install New Software``` and add the nightly build URL if you not have done so already:
+
+```
+http://update.knime.org/community-contributions/trunk
+```
+
+Once you have added and selected the nightly build, you are good to install ImmunoNodes. ImmunoNodes is listed under ```KNIME Community Contributions (nightly build) - Bioinformatics & NGS```, or simply type in the search field ```ImmunoNodes```.  Mark ImmunoNodes,  hit ```Next```, and follow the installation instructions on the screen.  After a KNIME restart, ImmunoNodes should be listed under ```Community Nodes```
 
 Contact
 =======
