@@ -42,7 +42,7 @@ Installation
 
 To install ImmunoNodes, please make sure that you fulfill all prerequisites and have installed KNIME >= 3.1 and Docker >= 1.9.
 
-1) First, download ImmunoNodes' Docker image typing the following command on the command line:
+1) First, download ImmunoNodes' Docker image bz typing the following command on the command line:
 ```
 docker pull aperim/immunonodes
 ``` 
