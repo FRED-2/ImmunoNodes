@@ -34,35 +34,42 @@ RUN apt-get update && apt-get install -y software-properties-common \
     libboost-dev \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && rm -rf /var/lib/apt/lists/* \
-&& curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
-&& apt-get install -y git-lfs \
-&& git lfs install \
 && apt-get clean \
 && apt-get purge
 
 
 RUN git clone https://github.com/FRED-2/ImmunoNodes.git \
-    && cd /ImmunoNodes \
-    && git lfs fetch \
-    && ls -lah contrib\
-    && git lfs pull \
-    && chmod -R 777 /ImmunoNodes/ \
-    && ls -lah contrib \
-    && mkdir /usr/src/LKH \
-    && tar -xzf /ImmunoNodes/contrib/pkg_predictors.tar.gz  -C /usr/local/ \
-    && tar -xzf /ImmunoNodes/contrib/LKH-2.0.7.tgz -C /usr/src/LKH \
-    && make -C /usr/src/LKH/LKH-2.0.7 \
-    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/
+    && make -C /ImmunoNodes/src \
+    && chmod -R 777 /ImmunoNodes/
+
+#get contribs
+RUN  mkdir /usr/src/LKH \
+    && mkdir /usr/src/hdf5 \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l8.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l8.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l9.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l9.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l10.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l10.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l11.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l11.trie" \
+    && curl -o /usr/local/pkg_predictors.tar.gz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/pkg_predictors.tar.gz" \
+    && curl -o /usr/src/LKH/LKH-2.0.7.tgz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/LKH-2.0.7.tgz" \
+    && curl -o /usr/src/hdf5/hdf5.tar.gz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared.tar.gz" \
+    && tar -xzf /usr/local/pkg_predictors.tar.gz  -C /usr/local/ \
+    && tar -xzf /usr/src/LKH/LKH-2.0.7.tgz -C /usr/src/LKH/ \
+    && tar -xvf /usr/src/hdf5/hdf5.tar.gz -C /usr/src/hdf5/ \
+    && mv /usr/src/hdf5/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/bin/* /usr/local/bin/ \
+    && mv /usr/src/hdf5/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/lib/* /usr/local/lib/ \
+    && mv /usr/src/hdf5/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/include/* /usr/local/include/ \
+    && mv /usr/src/hdf5/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/share/* /usr/local/share/ \
+    && make -C /usr/src/LKH/LKH-2.0.7/ \
+    && mv /usr/src/LKH/LKH-2.0.7/LKH /usr/local/bin/ \
+    && rm -rf /usr/src/LKH/ \
+    && rm -f /usr/local/pkg_predictors.tar.gz \
+    && rm -rf /usr/src/hdf5/
+
 
 
 #HLA Typing
 #OptiType dependecies
-RUN tar -xvf /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared.tar.gz -C /ImmunoNodes/contrib/ \
-    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/bin/* /usr/local/bin/ \
-    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/lib/* /usr/local/lib/ \
-    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/include/* /usr/local/include/ \
-    && mv /ImmunoNodes/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared/share/* /usr/local/share/ \
-    && rm -rf /ImmunoNodes/contrib/
+
 
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 ENV HDF5_DIR /usr/local/
@@ -114,16 +121,6 @@ RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
 #Fred2
 RUN pip install git+https://github.com/FRED-2/Fred2@master
 
-
-#dist2self
-#download pre-generated tries
-RUN curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l8.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l8.trie" \
-    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l9.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l9.trie" \
-    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l10.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l10.trie" \
-    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l11.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l11.trie" 
-
-#compile code
-RUN make -C /ImmunoNodes/src 
 
 #set envirnomental variables for prediction methods
 ENV NETCHOP /usr/local/predictors/netchop/netchop-3.1
