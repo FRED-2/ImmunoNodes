@@ -74,7 +74,7 @@ RUN  mkdir /usr/src/LKH \
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 ENV HDF5_DIR /usr/local/
 
-RUN pip install --upgrade pip && pip install \
+RUN pip install \
     cython \
     numpy \
     pyomo \
