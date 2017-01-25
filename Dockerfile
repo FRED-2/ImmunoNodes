@@ -74,7 +74,7 @@ RUN  mkdir /usr/src/LKH \
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 ENV HDF5_DIR /usr/local/
 
-RUN pip install \
+RUN pip install --upgrade pip && pip install \
     cython \
     numpy \
     pyomo \
@@ -119,7 +119,7 @@ RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
     && chmod 777 /usr/local/bin/seq2hla/seq2HLA.py 
 
 #Fred2
-RUN pip install git+https://github.com/FRED-2/Fred2@master
+RUN pip install --upgrade pip && pip install git+https://github.com/FRED-2/Fred2@master
 
 
 #set envirnomental variables for prediction methods
