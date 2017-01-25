@@ -75,6 +75,7 @@ ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 ENV HDF5_DIR /usr/local/
 
 RUN pip install --upgrade pip && pip install \
+    setuptools==33.1.1 \
     cython \
     numpy \
     pyomo \
@@ -82,7 +83,8 @@ RUN pip install --upgrade pip && pip install \
     matplotlib \
     tables \
     pandas \
-    future
+    future \
+    && pip install git+https://github.com/FRED-2/Fred2@master
 
 #installing optitype form git repository (version Dec 09 2015) and wirtig config.ini
 RUN git clone https://github.com/FRED-2/OptiType.git \
@@ -119,7 +121,7 @@ RUN hg clone https://bitbucket.org/sebastian_boegel/seq2hla \
     && chmod 777 /usr/local/bin/seq2hla/seq2HLA.py 
 
 #Fred2
-RUN pip install --upgrade pip && pip install git+https://github.com/FRED-2/Fred2@master
+#RUN pip install --upgrade pip && pip install git+https://github.com/FRED-2/Fred2@master
 
 
 #set envirnomental variables for prediction methods
