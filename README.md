@@ -6,7 +6,7 @@ What is ImmunoNodes:
 
 ImmunoNodes is a collection of immunoinformatics command line tools and community KNIME nodes (http://www.knime.org), written in Python with FRED 2 (http://fred-2.github.io/).
 It offers unified interfaces to many popular immunoinformatics methods and covers a wide variety of standard applications, 
-such as: (neo-)epitope, cleavage site, and TAP prediction, as well as HLA genotyping, and epitope-based vaccine design.
+such as: (neo-)epitope, cleavage site, and TAP prediction, as well as HLA genotyping, and epitope-based vaccine design 
 Building onto of KNIME, ImmunoNodes is a powerful and intuitive toolbox to develop complex workflows, even without any programming experience. 
 
 
@@ -27,22 +27,22 @@ integrated into ImmunoNodes can be found in LICENSE.
 
 Prerequisite:
 ------------
-ImmunNodes is platform independent by using Docker images (https://www.docker.com/), the CPU must support VT-x or AMD-v.
+ImmunNodes is platform independent using Docker images (https://www.docker.com/), the CPU must support VT-x or AMD-v.
 
 For KNIME integration you need:
 * KNIME >= 3.1: http://www.knime.org
 * Docker >= 1.9: https://www.docker.com/
 * Generic KNIME Node (with Docker support): (https://github.com/genericworkflownodes/GenericKnimeNodes)
 
-For commandline tool usage you can either use the provided Docker image and call the command lines within the Docker container (see Installation). 
+For commandline tool usage, you can either use the provided Docker image and call the command lines within the Docker container (see Installation). 
 
 
 Installation
 -------------
 
-To install ImmunoNodes, please make sure that you fulfill all prerequisites and have installed KNIME >= 3.1 and Docker >= 1.9.
+To install ImmunoNodes, please make sure that you fulfill all prerequisites and that you have installed KNIME >= 3.1 and Docker >= 1.9.
 
-1) First, download ImmunoNodes' Docker image bz typing the following command on the command line:
+1) First, download ImmunoNodes' Docker image by typing the following command on the command line:
 ```
 docker pull aperim/immunonodes
 ``` 
@@ -56,7 +56,11 @@ To install it, start KNIME and click ```Help->Install New Software``` and add th
 http://update.knime.org/community-contributions/trunk
 ```
 
-Once you have added and selected the nightly build, you are good to install ImmunoNodes. ImmunoNodes is listed under ```KNIME Community Contributions (nightly build) - Bioinformatics & NGS```, or simply type in the search field ```ImmunoNodes```.  Mark ImmunoNodes,  hit ```Next```, and follow the installation instructions on the screen.  After a KNIME restart, ImmunoNodes should be listed under ```Community Nodes```
+Once you have added and selected the nightly build, you are ready to install ImmunoNodes. 
+
+3) ImmunoNodes is listed under ```KNIME Community Contributions (nightly build) - Bioinformatics & NGS```, or simply type in the search field ```ImmunoNodes```.  Mark ImmunoNodes,  hit ```Next```, and follow the installation instructions on the screen.  After a KNIME restart, ImmunoNodes should be listed under ```Community Nodes```
+
+4) Lastly, you have to set KNIME's directory for temporary files to a folder beneath our user directory. Otherwise Docker wont function properly. To do so open KNIME and open the ``Perferences```. Click on menu open ```KNIME``` and change the directory specified in the ```Directory for temprary files```-option to a directory in your user-directory.
 
 Contact
 =======
