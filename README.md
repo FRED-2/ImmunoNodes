@@ -6,7 +6,7 @@ What is ImmunoNodes:
 
 ImmunoNodes is a collection of immunoinformatics command line tools and community KNIME nodes (http://www.knime.org), written in Python with FRED 2 (http://fred-2.github.io/).
 It offers unified interfaces to many popular immunoinformatics methods and covers a wide variety of standard applications, 
-such as: (neo-)epitope, cleavage site, and TAP prediction, as well as HLA genotyping, and epitope-based vaccine design 
+such as: (neo-)epitope, cleavage site, and TAP prediction, as well as HLA genotyping, and epitope-based vaccine design. 
 Building onto of KNIME, ImmunoNodes is a powerful and intuitive toolbox to develop complex workflows, even without any programming experience. 
 
 
@@ -49,11 +49,11 @@ docker pull aperim/immunonodes
 
 and executing it by hitting ```Enter```. This will download the image from Docker Hub.
 
-2) ImmunoNodes is, as of now, available in KNIME's nightly branch.
 To install it, start KNIME and click ```Help->Install New Software``` and add the nightly build URL if you not have done so already:
 
 ```
 http://update.knime.org/community-contributions/trunk
+2) ImmunoNodes is, as of now, available in KNIME's nightly branch.
 ```
 
 Once you have added and selected the nightly build, you are ready to install ImmunoNodes. 
@@ -61,6 +61,16 @@ Once you have added and selected the nightly build, you are ready to install Imm
 3) ImmunoNodes is listed under ```KNIME Community Contributions (nightly build) - Bioinformatics & NGS```, or simply type in the search field ```ImmunoNodes```.  Mark ImmunoNodes,  hit ```Next```, and follow the installation instructions on the screen.  After a KNIME restart, ImmunoNodes should be listed under ```Community Nodes```
 
 4) Lastly, you have to set KNIME's directory for temporary files to a folder beneath our user directory. Otherwise Docker wont function properly. To do so open KNIME and open the ``Perferences```. Click on menu open ```KNIME``` and change the directory specified in the ```Directory for temprary files```-option to a directory in your user-directory.
+
+Citation
+========
+
+Please cite:
+
+Schubert, B., De la Garza, L., Mohr, C., Walzer, M., and Kohlbacher O. (2017). ImmunoNodes – Graphical Development of Complex Immunoinformatics Workflows. BMC Bioinformatics (accepted)
+
+and the original articles of the methods used in your workflow.
+
 
 Contact
 =======
