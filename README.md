@@ -60,14 +60,14 @@ Once you have added and selected the nightly build, you are ready to install Imm
 
 3) ImmunoNodes is listed under ```KNIME Community Contributions (nightly build) - Bioinformatics & NGS```, or simply type in the search field ```ImmunoNodes```.  Mark ImmunoNodes,  hit ```Next```, and follow the installation instructions on the screen.  After a KNIME restart, ImmunoNodes should be listed under ```Community Nodes```
 
-4) Lastly, you have to set KNIME's directory for temporary files to a folder beneath our user directory. Otherwise Docker wont function properly. To do so open KNIME and open the ``Perferences```. Click on menu open ```KNIME``` and change the directory specified in the ```Directory for temprary files```-option to a directory in your user-directory.
+4) Lastly, you have to set KNIME's directory for temporary files to a folder beneath our user directory. Otherwise Docker wont function properly. To do so open KNIME and open the ```Perferences```. Click on menu open ```KNIME``` and change the directory specified in the ```Directory for temprary files```-option to a directory in your user-directory.
 
 Citation
 ========
 
 Please cite:
 
-Schubert, B., De la Garza, L., Mohr, C., Walzer, M., and Kohlbacher O. (2017). ImmunoNodes – Graphical Development of Complex Immunoinformatics Workflows. BMC Bioinformatics (accepted)
+```Schubert, B., De la Garza, L., Mohr, C., Walzer, M., and Kohlbacher O. (2017). ImmunoNodes – Graphical Development of Complex Immunoinformatics Workflows. BMC Bioinformatics (accepted).```
 
 and the original articles of the methods used in your workflow.
 
