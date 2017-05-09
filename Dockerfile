@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
     r-base \
     bowtie \
     libbz2-dev \
+    liblzma-dev \
     libboost-dev \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && rm -rf /var/lib/apt/lists/* \
