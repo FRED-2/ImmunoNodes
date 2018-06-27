@@ -2,18 +2,16 @@
 """
 Commandline tool for neoepitope protein fasta generation from annotated variant vcf.
 
-usage: neoepitopeprediction.py [-h]
-                               [-v VCF]
+usage: variants2proteins.py [-h]
+                               [-v VCF] [-p PROTEINS]
                                [-r REFERENCE] [-fINDEL] [-fFS] [-fSNP] -o
                                OUTPUT
 
-Neoepitope prediction for TargetInsepctor.
-
 optional arguments:
   -h, --help            show this help message and exit
-  -m {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}, --method {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}
-                        The name of the prediction method
   -v VCF, --vcf VCF     Path to the vcf input file
+  -p PROTEINS, --proteins PROTEINS
+                        Path to the protein ID input file (in HGNC-ID)
   -r REFERENCE, --reference REFERENCE
                         The reference genome used for varinat annotation and
                         calling.
@@ -127,14 +125,6 @@ def main():
         type=str,
         default=None,
         help='Path to the protein ID input file (in HGNC-ID)'
-        )
-
-    model.add_argument(
-        '-l','--length',
-        choices=range(8, 18),
-        type=int,
-        default=9,
-        help='The length of peptides'
         )
 
     model.add_argument(

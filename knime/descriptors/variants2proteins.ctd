@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<tool name="Variants2Proteins" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/CTD_0_3.xsd">
+	<manual>Variants2Proteins consumes a VCF File and generates all possible neoantigen proteins based on the annotated variants contained in the VCF file by extracting the annotated transcript sequences from Ensemble and integrating the variants. Optionally, it consumes a text file, containing gene IDs of the reference system used for annotation, which are used as filter during the neoantigen generation. Additionally the user can specify whether frameshift mutations, or deletions and insertions, besides single point mutations, should be considered. NeoEpitopePrediction currently supports  annotations for GRCh37 and GRCh38 only.
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.
+	</manual>
+	<description>Variants2Proteins consumes a VCF File and generates all possible neoantigen proteins based on the annotated variants contained in the VCF file by extracting the annotated transcript sequences from Ensemble and integrating the variants. Optionally, it consumes a text file, containing gene IDs of the reference system used for annotation, which are used as filter during the neoantigen generation. Additionally the user can specify whether frameshift mutations, or deletions and insertions, besides single point mutations, should be considered. NeoEpitopePrediction currently supports  annotations for GRCh37 and GRCh38 only.
+	
+	Please cite the original publication of the used prediction method alongside ImmunoNodes.
+	</description>
+	<executableName>variants2proteins.py</executableName>
+	<PARAMETERS version="1.6.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://github.com/genericworkflownodes/CTDopts/raw/master/schemas/Param_1_6_2.xsd">
+		<NODE description="Commandline tool for neoepitope protein fasta generation from annotated variant vcf." name="Variants2Proteins">
+			<ITEM description="Version of the tool that generated this parameters file." name="version" restrictions="1.0" tags="advanced" type="string" value="1.0"/>
+			<NODE description="Parameters of Variants2Proteins" name="1">
+				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.vcf" value=""/>
+				<ITEM description="Specifies the reference system used for annotation" name="reference" type="string" restrictions="GRCH37,GRCH38" value="GRCH38"/>
+				<ITEM description="A List of Gene Names for filtering (as to match ID-System used in annotation)" name="filter" type="input-file" required="false" value=""/>
+				<ITEM description="Filter SNPs" name="filterSnp" type="string"  value="false" restrictions="true,false"/>
+				<ITEM description="Filter INDELs" name="filterIndel" type="string"  value="true" restrictions="true,false" />
+				<ITEM description="Filter frame shifts" name="filterFs" type="string"  value="true" restrictions="true, false" />
+				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.fasta" value=""/>
+			</NODE>
+		</NODE>
+	</PARAMETERS>
+	<cli>
+		<clielement optionIdentifier="--vcf">
+			<mapping referenceName="Variants2Proteins.1.input"/>
+		</clielement>
+		<clielement optionIdentifier="--reference">
+			<mapping referenceName="Variants2Proteins.1.reference"/>
+		</clielement>
+		<clielement optionIdentifier="--proteins">
+			<mapping referenceName="Variants2Proteins.1.filter"/>
+		</clielement>
+		<clielement optionIdentifier="--output">
+			<mapping referenceName="Variants2Proteins.1.output"/>
+		</clielement>
+		<clielement optionIdentifier="-fSNP">
+			<mapping referenceName="Variants2Proteins.1.filterSnp"/>
+		</clielement>
+		<clielement optionIdentifier="-fINDEL">
+			<mapping referenceName="Variants2Proteins.1.filterIndel"/>
+		</clielement>
+		<clielement optionIdentifier="-fFS">
+			<mapping referenceName="Variants2Proteins.1.filterFs"/>
+		</clielement>
+	</cli>
+</tool>
