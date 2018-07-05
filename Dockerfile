@@ -76,6 +76,7 @@ ENV HDF5_DIR /usr/local/
 
 RUN pip install --upgrade pip && pip install \
     setuptools==33.1.1 \
+    tornado==4.5.3 \
     cython \
     numpy \
     pyomo \
