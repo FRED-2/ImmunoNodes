@@ -3,13 +3,16 @@
 Commandline tool for neoepitope protein fasta generation from annotated variant vcf.
 
 usage: variants2proteins.py [-h]
-                               [-v VCF] [-p PROTEINS]
+                               [-v VCF] [-t {VEP,ANNOVAR,SNPEFF}] [-p PROTEINS]
                                [-r REFERENCE] [-fINDEL] [-fFS] [-fSNP] -o
                                OUTPUT
 
 optional arguments:
   -h, --help            show this help message and exit
   -v VCF, --vcf VCF     Path to the vcf input file
+  -t {VEP,ANNOVAR,SNPEFF}, --type {VEP,ANNOVAR,SNPEFF}
+                        Type of annotation tool used (Variant Effect
+                        Predictor, ANNOVAR exonic gene annotation, SnpEff)
   -p PROTEINS, --proteins PROTEINS
                         Path to the protein ID input file (in HGNC-ID)
   -r REFERENCE, --reference REFERENCE
@@ -122,6 +125,14 @@ def main():
         )
 
     model.add_argument(
+        '-t', '--type',
+        type=str,
+        choices=["VEP", "ANNOVAR", "SnpEff"],
+        default="VEP",
+        help='Type of annotation tool used (Variant Effect Predictor, ANNOVAR exonic gene annotation, SnpEff)'
+        )
+
+    model.add_argument(
         '-p','--proteins',
         type=str,
         default=None,
@@ -180,9 +191,15 @@ def main():
                     if l != "":
                         protein_ids.append(l)
 
-        variants = Fred2.IO.FileReader.read_vcf(args.vcf)[0]
+        if args.type == "VEP":
+            variants = read_variant_effect_predictor(args.vcf, gene_filter=protein_ids)
 
-        variants = filter(lambda x: x.type != VariationType.UNKNOWN, variants)
+        elif args.type == "SNPEFF":
+            variants = read_vcf(args.vcf)[0]
+
+        else:
+            variants = read_annovar_exonic(args.vcf, gene_filter=protein_ids)
+
 
         if args.filterSNP:
             variants = filter(lambda x: x.type != VariationType.SNP, variants)
