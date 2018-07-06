@@ -46,13 +46,13 @@ RUN git clone https://github.com/FRED-2/ImmunoNodes.git \
 #get contribs
 RUN  mkdir /usr/src/LKH \
     && mkdir /usr/src/hdf5 \
-    && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l8.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l8.trie" \
-    && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l9.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l9.trie" \
-    && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l10.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l10.trie" \
-    && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l11.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l11.trie" \
-    && curl -Lo /usr/local/pkg_predictors.tar.gz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/pkg_predictors.tar.gz" \
-    && curl -Lo /usr/src/LKH/LKH-2.0.7.tgz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/LKH-2.0.7.tgz" \
-    && curl -Lo /usr/src/hdf5/hdf5.tar.gz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared.tar.gz" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l8.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l8.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l9.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l9.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l10.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l10.trie" \
+    && curl -o /ImmunoNodes/src/data/tries/uniprot_proteome_l11.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l11.trie" \
+    && curl -o /usr/local/pkg_predictors.tar.gz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/pkg_predictors.tar.gz" \
+    && curl -o /usr/src/LKH/LKH-2.0.7.tgz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/LKH-2.0.7.tgz" \
+    && curl -o /usr/src/hdf5/hdf5.tar.gz  "https://netcologne.dl.sourceforge.net/project/immunonode-files/contrib/hdf5-1.8.18-linux-centos7-x86_64-gcc485-shared.tar.gz" \
     && tar -xzf /usr/local/pkg_predictors.tar.gz  -C /usr/local/ \
     && tar -xzf /usr/src/LKH/LKH-2.0.7.tgz -C /usr/src/LKH/ \
     && tar -xvf /usr/src/hdf5/hdf5.tar.gz -C /usr/src/hdf5/ \
