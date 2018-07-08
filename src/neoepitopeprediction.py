@@ -4,7 +4,7 @@ Commandline tool for (neo)epitope prediction
 
 usage: neoepitopeprediction.py [-h]
                                [-m {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}]
-                               [-v VCF] [-t {VEP,ANNOVAR}] [-p PROTEINS]
+                               [-v VCF] [-t {VEP,ANNOVAR,SNPEFF}] [-p PROTEINS]
                                [-l {8,9,10,11,12,13,14,15,16,17}] -a ALLELES
                                [-r REFERENCE] [-fINDEL] [-fFS] [-fSNP] -o
                                OUTPUT
@@ -16,7 +16,7 @@ optional arguments:
   -m {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}, --method {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}
                         The name of the prediction method
   -v VCF, --vcf VCF     Path to the vcf input file
-  -t {VEP,ANNOVAR}, --type {VEP,ANNOVAR}
+  -t {VEP,ANNOVAR}, --type {VEP,ANNOVAR,SNPEFF}
                         Type of annotation tool used (Variant Effect
                         Predictor, ANNOVAR exonic gene annotation)
   -p PROTEINS, --proteins PROTEINS
@@ -49,6 +49,7 @@ from Fred2.IO import read_lines, MartsAdapter, read_annovar_exonic
 from Fred2.EpitopePrediction import EpitopePredictorFactory
 from Fred2.Core import generate_peptides_from_proteins, generate_peptides_from_variants
 from Fred2.IO.ADBAdapter import EIdentifierTypes, EAdapterFields
+from Fred2.IO.FileReader import read_vcf
 
 
 MARTDBURL = {"GRCH37": "http://grch37.ensembl.org/biomart/martservice?query=",
@@ -98,8 +99,9 @@ def read_variant_effect_predictor(file, gene_filter=None):
             isSynonymous = False
 
             for co in info.split(","):
-                #Allele|Gene|Feature|Feature_type|Consequence|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|SYMBOL|SYMBOL_SOURCE|HGNC_ID|CCDS">
-                _,gene,transcript_id,transcript_type,var_type,_,transcript_pos,prot_pos,_,_,_,distance,strand,HGNC_ID = co.strip().split("|")[:14]
+                #Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|SYMBOL_SOURCE|HGNC_ID|TSL|APPRIS|SIFT|PolyPhen|AF|AFR_AF|AMR_AF|EAS_AF|EUR_AF|SAS_AF|AA_AF|EA_AF|gnomAD_AF|gnomAD_AFR_AF|gnomAD_AMR_AF|gnomAD_ASJ_AF|gnomAD_EAS_AF|gnomAD_FIN_AF|gnomAD_NFE_AF|gnomAD_OTH_AF|gnomAD_SAS_AF|CLIN_SIG|SOMATIC|PHENO|PUBMED|MOTIF_NAME|MOTIF_POS|HIGH_INF_POS|MOTIF_SCORE_CHANGE">
+                _,var_type,_,gene,_,transcript_type,transcript_id,_,_,_,_,_,_,transcript_pos,prot_pos,aa_mutation = co.strip().split("|")[:16]
+                HGNC_ID=co.strip().split("|")[22]
 
                 #pass every other feature type except Transcript (RegulatoryFeature, MotifFeature.)
                 #pass genes that are uninterresting for us
@@ -112,15 +114,14 @@ def read_variant_effect_predictor(file, gene_filter=None):
 
                     #positioning in Fred2 is 0-based!!!
                     if transcript_pos != "":
-                        coding[transcript_id] = MutationSyntax(transcript_id, int(transcript_pos.split("-")[0])-1, 
-                            -1 if prot_pos  == "" else int(prot_pos.split("-")[0])-1, co, "", geneID=HGNC_ID)
+                        coding[transcript_id] = MutationSyntax(transcript_id, int(transcript_pos)-1, int(prot_pos)-1, co, "", geneID=HGNC_ID)
 
                 #is variant synonymous?
                 isSynonymous = any(t == "synonymous_variant" for t in var_type.split("&"))
+
             if coding:
                 vars.append(Variant(var_id, get_type(ref, alt), chrom, int(gene_pos), ref.upper(), alt.upper(), coding, False, isSynonymous))
     return vars
-
 
 def main():
 
@@ -145,9 +146,9 @@ def main():
     model.add_argument(
         '-t', '--type',
         type=str,
-        choices=["VEP", "ANNOVAR"],
+        choices=["VEP", "ANNOVAR", "SNPEFF"],
         default="VEP",
-        help='Type of annotation tool used (Variant Effect Predictor, ANNOVAR exonic gene annotation)'
+        help='Type of annotation tool used (Variant Effect Predictor, ANNOVAR exonic gene annotation, SnpEff)'
         )
 
     model.add_argument(
@@ -229,6 +230,8 @@ def main():
                         protein_ids.append(l)
         if args.type == "VEP":
             variants = read_variant_effect_predictor(args.vcf, gene_filter=protein_ids)
+        elif args.type == "SNPEFF":
+            variants = read_vcf(args.vcf)[0]
         else:
             variants = read_annovar_exonic(args.vcf, gene_filter=protein_ids)
 
