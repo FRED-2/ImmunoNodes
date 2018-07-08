@@ -15,6 +15,7 @@
 			<NODE description="Parameters of Variants2Proteins" name="1">
 				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.vcf" value=""/>
 				<ITEM description="Specifies the reference system used for annotation" name="reference" type="string" restrictions="GRCH37,GRCH38" value="GRCH38"/>
+                                <ITEM description="Type of vcf input. Either ANNOVAR gene annotation or Variant Effect Predictor annotation" name="type" type="string" restrictions="ANNOVAR,VEP" value="ANNOVAR"/>
 				<ITEM description="A List of Gene Names for filtering (as to match ID-System used in annotation)" name="filter" type="input-file" required="false" value=""/>
 				<ITEM description="Filter SNPs" name="filterSnp" type="string"  value="false" restrictions="true,false"/>
 				<ITEM description="Filter INDELs" name="filterIndel" type="string"  value="true" restrictions="true,false" />
@@ -30,6 +31,9 @@
 		<clielement optionIdentifier="--reference">
 			<mapping referenceName="Variants2Proteins.1.reference"/>
 		</clielement>
+                <clielement optionIdentifier="--type">
+                        <mapping referenceName="Variants2Proteins.1.type"/>
+                </clielement>
 		<clielement optionIdentifier="--proteins">
 			<mapping referenceName="Variants2Proteins.1.filter"/>
 		</clielement>
