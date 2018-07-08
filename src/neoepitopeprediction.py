@@ -16,9 +16,9 @@ optional arguments:
   -m {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}, --method {netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,epidemix,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas}
                         The name of the prediction method
   -v VCF, --vcf VCF     Path to the vcf input file
-  -t {VEP,ANNOVAR}, --type {VEP,ANNOVAR,SNPEFF}
+  -t {VEP,ANNOVAR, SNPEFF}, --type {VEP,ANNOVAR,SNPEFF}
                         Type of annotation tool used (Variant Effect
-                        Predictor, ANNOVAR exonic gene annotation)
+                        Predictor, ANNOVAR exonic gene annotation, SnpEff)
   -p PROTEINS, --proteins PROTEINS
                         Path to the protein ID input file (in HGNC-ID)
   -l {8,9,10,11,12,13,14,15,16,17}, --length {8,9,10,11,12,13,14,15,16,17}
