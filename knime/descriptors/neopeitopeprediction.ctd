@@ -15,7 +15,7 @@
 			<NODE description="Parameters of EpitopePredicton" name="1">
 				<ITEM description="The name of the prediction method" name="method" restrictions="netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,calisimm,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas" type="string" value="bimas"/>
 				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.vcf" value=""/>
-				<ITEM description="Type of vcf input. Either ANNOVAR gene annotation or Variant Effect Predictor annotation or SnpEff" name="type" type="string" restrictions="ANNOVAR,VEP" value="ANNOVAR"/>
+				<ITEM description="Type of vcf input. Either ANNOVAR gene annotation or Variant Effect Predictor annotation or SnpEff" name="type" type="string" restrictions="ANNOVAR,VEP,SNPEFF" value="ANNOVAR"/>
 				<ITEM description="Specifies the reference system used for annotation" name="reference" type="string" restrictions="GRCH37,GRCH38" value="GRCH38"/>
 				<ITEM description="A List of Gene Names for filtering (as to match ID-System used in annotation)" name="filter" type="input-file" required="false" value=""/>
 				<ITEM description="The length of peptides" name="length" restrictions="8:16" type="int" value="9"/>
