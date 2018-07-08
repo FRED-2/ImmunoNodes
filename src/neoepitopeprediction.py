@@ -259,7 +259,12 @@ def main():
 
         for v in variants:
             for trans_id,coding in v.coding.iteritems():
-                transcript_to_genes[trans_id] = coding.geneID
+                if coding.geneID!=None:
+                   transcript_to_genes[trans_id] = coding.geneID
+                else:
+                   transcript_to_genes[trans_id] = 'None'
+
+
 
     #else: generate protein sequences from given HGNC IDs and than epitopes
     else:
