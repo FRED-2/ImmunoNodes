@@ -31,6 +31,7 @@ optional arguments:
 import time
 import sys
 import argparse
+import logging
 
 from Fred2.Core import Protein, Peptide, Allele, MutationSyntax, Variant
 from Fred2.Core.Variant import VariationType
@@ -88,9 +89,14 @@ def read_variant_effect_predictor(file, gene_filter=None):
             isSynonymous = False
 
             for co in info.split(","):
-                #Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|SYMBOL_SOURCE|HGNC_ID|TSL|APPRIS|SIFT|PolyPhen|AF|AFR_AF|AMR_AF|EAS_AF|EUR_AF|SAS_AF|AA_AF|EA_AF|gnomAD_AF|gnomAD_AFR_AF|gnomAD_AMR_AF|gnomAD_ASJ_AF|gnomAD_EAS_AF|gnomAD_FIN_AF|gnomAD_NFE_AF|gnomAD_OTH_AF|gnomAD_SAS_AF|CLIN_SIG|SOMATIC|PHENO|PUBMED|MOTIF_NAME|MOTIF_POS|HIGH_INF_POS|MOTIF_SCORE_CHANGE">
-                _,var_type,_,gene,_,transcript_type,transcript_id,_,_,_,_,_,_,transcript_pos,prot_pos,aa_mutation = co.strip().split("|")[:16]
-                HGNC_ID=co.strip().split("|")[22]
+                #skip additional info fields without annotation
+                try:
+                    #Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|SYMBOL_SOURCE|HGNC_ID|TSL|APPRIS|SIFT|PolyPhen|AF|AFR_AF|AMR_AF|EAS_AF|EUR_AF|SAS_AF|AA_AF|EA_AF|gnomAD_AF|gnomAD_AFR_AF|gnomAD_AMR_AF|gnomAD_ASJ_AF|gnomAD_EAS_AF|gnomAD_FIN_AF|gnomAD_NFE_AF|gnomAD_OTH_AF|gnomAD_SAS_AF|CLIN_SIG|SOMATIC|PHENO|PUBMED|MOTIF_NAME|MOTIF_POS|HIGH_INF_POS|MOTIF_SCORE_CHANGE">
+                    _,var_type,_,gene,_,transcript_type,transcript_id,_,_,_,_,_,_,transcript_pos,prot_pos,aa_mutation = co.strip().split("|")[:16]
+                    HGNC_ID=co.strip().split("|")[22]
+                except ValueError:
+                    logging.warning("INFO field in different format in line: {}, skipping...".format(str(i)))
+                    continue
 
                 #pass every other feature type except Transcript (RegulatoryFeature, MotifFeature.)
                 #pass genes that are uninterresting for us
@@ -102,9 +108,8 @@ def read_variant_effect_predictor(file, gene_filter=None):
                     #generate mutation syntax
 
                     #positioning in Fred2 is 0-based!!!
-                    if transcript_pos != "":
-                        coding[transcript_id] = MutationSyntax(transcript_id, int(transcript_pos)-1, 
-                            -1 if prot_pos  == "" else int(prot_pos)-1, co, "", geneID=HGNC_ID)
+                    if transcript_pos != "" and '?' not in transcript_pos:
+                        coding[transcript_id] = MutationSyntax(transcript_id, int(transcript_pos.split("-")[0])-1, -1 if prot_pos  == "" else int(prot_pos.split("-")[0])-1, co, "", geneID=HGNC_ID)
 
                 #is variant synonymous?
                 isSynonymous = any(t == "synonymous_variant" for t in var_type.split("&"))
