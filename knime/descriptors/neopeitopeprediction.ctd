@@ -4,7 +4,7 @@
 	
 	Please cite the original publication of the used prediction method alongside ImmunoNodes.
 	</manual>
-	<description>NeoEpitopePrediction consumes a VCF File, besides a text file containing HLA alleles, and generates all possible neoepitopes based on the annotated variants contained in the VCF file by extracting the annotated transcript sequences from Ensemble and integrating the variants. Optionally, it consumes a text file, containing gene IDs of the reference system used for annotation, which are used as filter during the neoepitope generation. Additionally the user can specify whether frameshift mutations, or deletions and insertions, besides single point mutations, should be considered. NeoEpitopePrediction currently supports ANNOVAR and Variant Effect Predictor annotations for GRCh37 and GRCh38 only.
+	<description>NeoEpitopePrediction consumes a VCF File, besides a text file containing HLA alleles, and generates all possible neoepitopes based on the annotated variants contained in the VCF file by extracting the annotated transcript sequences from Ensemble and integrating the variants. Optionally, it consumes a text file, containing gene IDs of the reference system used for annotation, which are used as filter during the neoepitope generation. Additionally the user can specify whether frameshift mutations, or deletions and insertions, besides single point mutations, should be considered. NeoEpitopePrediction currently supports SnpEff, ANNOVAR and Variant Effect Predictor annotations for GRCh37 and GRCh38 only.
 	
 	Please cite the original publication of the used prediction method alongside ImmunoNodes.
 	</description>
@@ -15,7 +15,7 @@
 			<NODE description="Parameters of EpitopePredicton" name="1">
 				<ITEM description="The name of the prediction method" name="method" restrictions="netmhc,smmpmbec,syfpeithi,netmhcpan,netctlpan,smm,tepitopepan,arb,pickpocket,calisimm,netmhcii,netmhciipan,comblibsidney,unitope,hammer,svmhc,bimas" type="string" value="bimas"/>
 				<ITEM description="Path to the input file" name="input" type="input-file" required="true" supported_formats="*.vcf" value=""/>
-				<ITEM description="Type of vcf input. Either ANNOVAR gene annotation or Variant Effect Predictor annotation" name="type" type="string" restrictions="ANNOVAR,VEP" value="ANNOVAR"/>
+				<ITEM description="Type of vcf input. Either ANNOVAR gene annotation or Variant Effect Predictor annotation or SnpEff" name="type" type="string" restrictions="ANNOVAR,VEP,SNPEFF" value="ANNOVAR"/>
 				<ITEM description="Specifies the reference system used for annotation" name="reference" type="string" restrictions="GRCH37,GRCH38" value="GRCH38"/>
 				<ITEM description="A List of Gene Names for filtering (as to match ID-System used in annotation)" name="filter" type="input-file" required="false" value=""/>
 				<ITEM description="The length of peptides" name="length" restrictions="8:16" type="int" value="9"/>
