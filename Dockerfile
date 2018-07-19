@@ -16,11 +16,13 @@ RUN apt-get update && apt-get install -y software-properties-common \
     git \
     mercurial \
     curl \
+    libcurl4-openssl-dev \
     pkg-config \
     python \
     python-pip \
     python-dev \
-    python-matplotlib \
+    cython \
+    libfreetype6-dev \
     libmysqlclient-dev \
     libboost-dev \
     libboost-serialization-dev \
@@ -32,6 +34,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
     bowtie \
     libbz2-dev \
     liblzma-dev \
+    liblzo2-dev \
 && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 \
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean \
@@ -45,6 +48,7 @@ RUN git clone https://github.com/FRED-2/ImmunoNodes.git \
 #get contribs
 RUN  mkdir /usr/src/LKH \
     && mkdir /usr/src/hdf5 \
+    && mkdir -p /ImmunoNodes/src/data/tries \
     && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l8.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l8.trie" \
     && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l9.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l9.trie" \
     && curl -Lo /ImmunoNodes/src/data/tries/uniprot_proteome_l10.trie "https://netcologne.dl.sourceforge.net/project/immunonode-files/uniprot_proteome_l10.trie" \
@@ -77,14 +81,13 @@ ENV HDF5_DIR /usr/local/
 RUN pip install --upgrade pip && pip install \
     setuptools==33.1.1 \
     tornado==4.5.3 \
-    cython \
-    numpy \
-    pyomo \
-    pysam \
-    matplotlib \
-    tables \
-    pandas \
-    future \
+    numpy==1.14.5 \
+    pyomo==4.4.1 \
+    pysam==0.14.1 \
+    tables==3.4.4 \
+    pandas==0.23.2 \
+    future==0.16.0 \
+    matplotlib==1.4.3 \
     && pip install git+https://github.com/FRED-2/Fred2@master
 
 #installing optitype form git repository (version Dec 09 2015) and wirtig config.ini
