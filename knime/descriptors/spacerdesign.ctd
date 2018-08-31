@@ -21,7 +21,7 @@
 				<ITEM description="Specifies the second-order preference of the user in the model [0,1] (default 0)." name="beta" type="float" value="0" restrictions="0:1" />
 				<ITEM description="Specifies the maximal length of the spacer" name="k" restrictions="1:10" value="6" type="int" />
 				<ITEM description="Path to the allele frequency file (one per line in new nomenclature)" name="alleles" supported_formats="*.tsv" required="true" type="input-file" value=""/>
-				<ITEM description="Specify whether the problem should be approximation or optimally solved" name="approximate" type="string" value="false" restrictions="true,false"/>
+				<ITEM description="Specify whether the problem should be approximation or optimally solved" name="approximate" type="bool" value="false"/>
 				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.fasta" value=""/>
 			</NODE>
 		</NODE>
