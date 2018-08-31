@@ -19,9 +19,9 @@
 				<ITEM description="Specifies the reference system used for annotation" name="reference" type="string" restrictions="GRCH37,GRCH38" value="GRCH38"/>
 				<ITEM description="A List of Gene Names for filtering (as to match ID-System used in annotation)" name="filter" type="input-file" required="false" value=""/>
 				<ITEM description="The length of peptides" name="length" restrictions="8:16" type="int" value="9"/>
-				<ITEM description="Filter SNPs" name="filterSnp" type="string"  value="false" restrictions="true,false"/>
-				<ITEM description="Filter INDELs" name="filterIndel" type="string"  value="true" restrictions="true,false" />
-				<ITEM description="Filter frame shifts" name="filterFs" type="string"  value="true" restrictions="true, false" />
+				<ITEM description="Filter SNPs" name="filterSnp" type="bool"  value="false"/>
+				<ITEM description="Filter INDELs" name="filterIndel" type="bool"  value="true"/>
+				<ITEM description="Filter frame shifts" name="filterFs" type="bool"  value="true"/>
 				<ITEM description="Path to the allele file (one per line in new nomenclature)" name="alleles" supported_formats="*.tsv" required="true" type="input-file" value=""/>
 				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.tsv" value=""/>
 			</NODE>

@@ -14,7 +14,7 @@
 				<ITEM description="Path to the input file" name="input" required="true" supported_formats="*.tsv" type="input-file" value=""/>
 				<ITEM description="The name of the prediction method" name="method" restrictions="proteasmm_i,netchop,proteasmm_c,pcm" type="string" value="pcm"/>
 				<ITEM description="Specifies how strong unwanted cleavage sites should be punished [0,1],where 0 means they will be ignored, and 1 the sum of all unwanted cleave sites is subtracted from the cleave site between two epitopes" name="weight" type="float" value="0.0"/>
-				<ITEM description="Specify whether the problem should be approximation or optimally solved" name="approximate" type="string" value="false" required="false" restrictions="true,false"/>
+				<ITEM description="Specify whether the problem should be approximation or optimally solved" name="approximate" type="bool" value="false" required="false"/>
 				<ITEM description="Path to the output file" name="output" type="output-file" required="true" supported_formats="*.fasta" value=""/>
 			</NODE>
 		</NODE>
