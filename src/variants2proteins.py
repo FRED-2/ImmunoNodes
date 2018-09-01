@@ -132,7 +132,7 @@ def main():
     model.add_argument(
         '-t', '--type',
         type=str,
-        choices=["VEP", "ANNOVAR", "SnpEff"],
+        choices=["VEP", "ANNOVAR", "SNPEFF"],
         default="VEP",
         help='Type of annotation tool used (Variant Effect Predictor, ANNOVAR exonic gene annotation, SnpEff)'
         )
