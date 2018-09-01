@@ -224,23 +224,22 @@ def main():
 
         variants = filter(lambda x: x.type != VariationType.UNKNOWN, variants)
 
+
         #generate transcripts
         transcripts = generate_transcripts_from_variants(variants, martDB, EIdentifierTypes.ENSEMBL)
 
         #generate proteins
-        proteins = filter(lambda x:any(x.get_variants_by_protein(tid) for tid in x.proteins.iterkeys()),
-                        generate_proteins_from_transcripts(transcripts))
-
+        proteins = generate_proteins_from_transcripts(transcripts)
 
         #write fasta file
-        with open(output, "w") as f:
+        with open(args.output, "w") as f:
             for p in proteins:
                 f.write('>' + str(p.transcript_id) + '|' + str(p.vars) + '_var_' + '\n')
                 f.write(str(p)+ '\n')
 
     else:
         sys.stderr.write("At least a vcf file or a protein id file has to be provided.\n")
-        return -1              
+        return -1
 
     return 0
 
