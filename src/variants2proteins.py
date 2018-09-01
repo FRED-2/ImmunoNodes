@@ -231,8 +231,6 @@ def main():
         #generate proteins
         proteins = generate_proteins_from_transcripts(transcripts)
 
-        print proteins
-
         #write fasta file
         with open(args.output, "w") as f:
             for p in proteins:
