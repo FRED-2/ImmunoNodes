@@ -224,7 +224,6 @@ def main():
 
         variants = filter(lambda x: x.type != VariationType.UNKNOWN, variants)
 
-
         #generate transcripts
         transcripts = generate_transcripts_from_variants(variants, martDB, EIdentifierTypes.ENSEMBL)
 
